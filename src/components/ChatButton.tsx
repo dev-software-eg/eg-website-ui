@@ -240,7 +240,7 @@ export default function ChatButton() {
 
                 {/* Contact form appears inline at the position it was triggered */}
                 {i === contactFormAfterIndex && (
-                  <ChatContactForm needsSummary={needsSummary} />
+                  <ChatContactForm needsSummary={needsSummary} messages={messages} />
                 )}
 
                 {/* Case studies pinned inline at the position they were triggered */}

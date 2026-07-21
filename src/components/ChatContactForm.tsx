@@ -1,7 +1,10 @@
 import { useState } from "react";
+import emailjs from "@emailjs/browser";
+import type { ChatMessage } from "../hooks/useChat";
 
 interface ChatContactFormProps {
   needsSummary?: string | null;
+  messages?: ChatMessage[];
 }
 
 const inputStyle: React.CSSProperties = {
@@ -17,23 +20,45 @@ const inputStyle: React.CSSProperties = {
   boxSizing: "border-box",
 };
 
-export function ChatContactForm({ needsSummary }: ChatContactFormProps) {
+function formatChatLog(messages: ChatMessage[]): string {
+  return messages
+    .map((m) => `${m.role === "user" ? "User" : "Assistant"}: ${m.content}`)
+    .join("\n\n");
+}
+
+export function ChatContactForm({ needsSummary, messages = [] }: ChatContactFormProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState(needsSummary ?? "");
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!name.trim() || !email.trim()) return;
-    fetch("http://localhost:3000/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name.trim(),
-        email: email.trim(),
-        description: needsSummary ?? undefined,
-      }),
-    }).catch(() => {});
-    setSubmitted(true);
+    setSending(true);
+    setSendError(null);
+    try {
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          submitter_name: name.trim(),
+          submitter_email: email.trim(),
+          submitter_phone: phone,
+          needs_summary: message,
+          chat_log: formatChatLog(messages),
+          to_email: "dev-software@estiponagroup.com",
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+      setSubmitted(true);
+    } catch (err) {
+      setSendError(err instanceof Error ? err.message : "Failed to send. Please try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -49,13 +74,20 @@ export function ChatContactForm({ needsSummary }: ChatContactFormProps) {
         <>
           <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
           <input type="email" placeholder="Your email" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
-          <textarea placeholder="Your message" value={needsSummary ?? ""} rows={5} readOnly style={inputStyle} />
+          <input type="tel" placeholder="Your phone number" value={phone} onChange={(e) => setPhone(e.target.value)} style={inputStyle} />
+          <textarea placeholder="Your message" value={message} rows={5} onChange={(e) => setMessage(e.target.value)} style={inputStyle} />
           <button
             onClick={handleSubmit}
-            style={{ padding: "10px 16px", background: "var(--eg-blue-black)", color: "var(--eg-white)", border: "none", cursor: "pointer", fontSize: 11, fontFamily: "Helvetica Neue", fontWeight: 500, letterSpacing: 1.2, textTransform: "uppercase" }}
+            disabled={sending}
+            style={{ padding: "10px 16px", background: sending ? "var(--eg-blue-black-25)" : "var(--eg-blue-black)", color: "var(--eg-white)", border: "none", cursor: sending ? "wait" : "pointer", fontSize: 11, fontFamily: "Helvetica Neue", fontWeight: 500, letterSpacing: 1.2, textTransform: "uppercase" }}
           >
-            Submit
+            {sending ? "Sending…" : "Submit"}
           </button>
+          {sendError && (
+            <p style={{ margin: 0, fontSize: 12, fontFamily: "Helvetica Neue", color: "var(--eg-red)" }}>
+              {sendError}
+            </p>
+          )}
         </>
       )}
     </div>
