@@ -11,6 +11,7 @@ const ChatIcon = () => <img src={aiIcon} alt="AI Icon" />;
 
 export default function ChatButton() {
   const [open, setOpen] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -79,11 +80,13 @@ export default function ChatButton() {
       {open && (
         <div
           style={{
-            position: "absolute",
-            top: "100%",
+            position: fullscreen ? "fixed" : "absolute",
+            top: fullscreen ? 0 : "100%",
             right: 0,
-            width: 380,
-            height: 500,
+            left: fullscreen ? 0 : "auto",
+            bottom: fullscreen ? 0 : "auto",
+            width: fullscreen ? "100vw" : 380,
+            height: fullscreen ? "100vh" : 500,
             background: "var(--eg-white)",
             boxShadow: "0 8px 40px rgba(10,14,20,0.18)",
             display: "flex",
@@ -127,25 +130,42 @@ export default function ChatButton() {
                 Estipona Group AI
               </p>
             </div>
-            {messages.length > 0 && (
+            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              {messages.length > 0 && (
+                <button
+                  onClick={reset}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: 10,
+                    fontFamily: "Helvetica Neue",
+                    fontWeight: 500,
+                    letterSpacing: 1.2,
+                    textTransform: "uppercase",
+                    color: "var(--eg-blue-black-25)",
+                    padding: "4px 8px",
+                  }}
+                >
+                  Clear
+                </button>
+              )}
               <button
-                onClick={reset}
+                onClick={() => setFullscreen((prev) => !prev)}
+                title={fullscreen ? "Collapse" : "Expand"}
                 style={{
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  fontSize: 10,
-                  fontFamily: "Helvetica Neue",
-                  fontWeight: 500,
-                  letterSpacing: 1.2,
-                  textTransform: "uppercase",
+                  fontSize: 28,
                   color: "var(--eg-blue-black-25)",
                   padding: "4px 8px",
+                  lineHeight: 1,
                 }}
               >
-                Clear
+                {fullscreen ? "⤡" : "⤢"}
               </button>
-            )}
+            </div>
           </div>
 
           {/* Messages */}
