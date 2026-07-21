@@ -97,6 +97,8 @@ Chat/search UI (`src/hooks/useChat.ts`, `useSubmitSearch.ts`, `src/components/ch
 
 Set `AI_SEARCH_API_URL` (server-only, never sent to the browser) to wherever that backend runs — a different port than `3000` locally, since Next's dev server claims that one. Point it at a deployed instance the same way, per Vercel environment.
 
+If `AI_SEARCH_API_URL` points at a Vercel deployment with **Deployment Protection** enabled (any non-production preview branch, by default), server-to-server requests get a `401` before they even reach the app. Generate a **Protection Bypass for Automation** secret in that project's Settings → Deployment Protection, and set it here as `AI_SEARCH_API_BYPASS_SECRET` — the route handlers send it as an `x-vercel-protection-bypass` header automatically when present.
+
 ## Project structure
 
 ```

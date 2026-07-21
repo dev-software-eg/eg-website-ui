@@ -4,7 +4,12 @@ export async function POST(request: Request) {
   try {
     const upstream = await fetch(`${process.env.AI_SEARCH_API_URL}/api/match`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(process.env.AI_SEARCH_API_BYPASS_SECRET && {
+          'x-vercel-protection-bypass': process.env.AI_SEARCH_API_BYPASS_SECRET,
+        }),
+      },
       body,
     });
     const data = await upstream.text();
