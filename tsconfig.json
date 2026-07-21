@@ -45,8 +45,6 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "sanity.config.ts",
-    "sanity.cli.ts"
+    "node_modules"
   ]
 }
