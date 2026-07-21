@@ -1,17 +1,11 @@
 import Button from "../components/Button";
 import Hero from "../components/Hero";
-import Hero2 from "../components/Hero2";
 import WhatWeDo from "../components/WhatWeDo";
 import FeaturedCaseStudyConnected from "../components/FeaturedCaseStudyConnected";
 export default function Home() {
   return (
     <div>
-      {/* <Hero
-        title="We use marketing"
-        subtitle="to solve problems."
-        body="At Estipona Group, we help businesses and organizations address challenges and meet goals. Buying, joining, understanding, watching, asking, celebrating, believing — if you want people to do something, we can help."
-      /> */}
-      <Hero2
+      <Hero
         title="We use marketing"
         subtitle="to solve problems."
         body="At Estipona Group, we help businesses and organizations address challenges and meet goals. Buying, joining, understanding, watching, asking, celebrating, believing — if you want people to do something, we can help."

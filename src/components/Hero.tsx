@@ -1,3 +1,5 @@
+import heroImage from "../assets/media/home/hero.png";
+
 interface HeroProps {
   title?: string;
   subtitle?: string;
@@ -6,29 +8,22 @@ interface HeroProps {
   imageAlt?: string;
 }
 
-const headingStyle: React.CSSProperties = {
-  margin: 0,
-  fontSize: 96,
-  fontFamily: "'Test Die Grotesk A', 'Helvetica Neue', sans-serif",
-  fontWeight: 700,
-  lineHeight: "88px",
-  wordWrap: "break-word",
-};
-
 export default function Hero({
   title = "We use marketing",
   subtitle = "to solve problems.",
   body = "At Estipona Group, we help businesses and organizations address challenges and meet goals. Buying, joining, understanding, watching, asking, celebrating, believing — if you want people to do something, we can help.",
-  imageSrc = "https://placehold.co/900x900",
-  imageAlt = "",
+  imageSrc = heroImage,
+  imageAlt = "https://placehold.co/981x1136",
 }: HeroProps) {
   return (
     <div
       style={{
-        display: "flex",
         width: "100%",
         height: "90vh",
-        background: "var(--eg-bg-light)",
+        minHeight: 600,
+        background: "#F7F6F4",
+        display: "flex",
+        overflow: "hidden",
       }}
     >
       {/* Left — content */}
@@ -51,29 +46,51 @@ export default function Hero({
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: 48,
-            maxWidth: 556,
+            gap: 32,
           }}
         >
-          <div>
-            <h1 style={{ ...headingStyle, color: "var(--eg-blue-black-95)" }}>
-              {title}
-            </h1>
-            <h1 style={{ ...headingStyle, color: "var(--eg-red)" }}>
+          {/* Heading */}
+          <div style={{ width: 556 }}>
+            <span
+              style={{
+                color: "rgba(25,28,37,0.95)",
+                fontSize: 96,
+                fontFamily:
+                  "'Test Die Grotesk A', 'Helvetica Neue', sans-serif",
+                fontWeight: 700,
+                lineHeight: "82px",
+                wordWrap: "break-word",
+              }}
+            >
+              {title}{" "}
+            </span>
+            <span
+              style={{
+                color: "var(--eg-red)",
+                fontSize: 96,
+                fontFamily:
+                  "'Test Die Grotesk A', 'Helvetica Neue', sans-serif",
+                fontWeight: 700,
+                lineHeight: "82px",
+                wordWrap: "break-word",
+              }}
+            >
               {subtitle}
-            </h1>
+            </span>
           </div>
 
+          {/* Body */}
           <p
             style={{
               margin: 0,
-              maxWidth: 503,
-              color: "var(--eg-blue-black-95)",
-              fontSize: 16,
+              width: 503,
+              color: "rgba(25,28,37,0.95)",
+              fontSize: 24,
               fontFamily: "Helvetica Neue, sans-serif",
               fontWeight: 400,
-              lineHeight: "26px",
+              lineHeight: "30px",
               letterSpacing: 0.16,
+              wordWrap: "break-word",
             }}
           >
             {body}
@@ -81,28 +98,23 @@ export default function Hero({
         </div>
       </div>
 
-      {/* Right — full-bleed image */}
+      {/* Right Content*/}
       <div
         style={{
           width: "50%",
           flexShrink: 0,
+          boxSizing: "border-box",
+          paddingLeft: 40,
+          paddingRight: 40,
           overflow: "hidden",
-          position: "relative",
+          backgroundImage: `url(${imageSrc})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
-      >
-        <img
-          src={imageSrc}
-          alt={imageAlt}
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            display: "block",
-          }}
-        />
-      </div>
+      ></div>
     </div>
   );
 }
