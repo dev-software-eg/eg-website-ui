@@ -70,7 +70,7 @@ export default function ChatButton() {
     <div style={{ position: "relative", width: 64, flexShrink: 0 }}>
       {/* Toggle button */}
       <button
-        className="eg-chat-btn"
+        className={`eg-chat-btn${open ? " eg-chat-btn--open" : ""}`}
         onClick={() => setOpen((prev) => !prev)}
         style={{
           position: "absolute",
