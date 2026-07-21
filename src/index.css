@@ -136,10 +136,23 @@ code {
   background: var(--code-bg);
 }
 
+.eg-chat-btn .eg-sparkle-lg,
+.eg-chat-btn .eg-sparkle-sm,
+.eg-chat-btn .eg-sparkle-xs {
+  transition: fill 0.2s ease;
+}
+
 @keyframes eg-sparkle {
   0%, 100% { fill: #191C25; }
   33%       { fill: #BC2814; }
   66%       { fill: #9DBEB7; }
+}
+
+.eg-chat-btn--open .eg-sparkle-lg,
+.eg-chat-btn--open .eg-sparkle-sm,
+.eg-chat-btn--open .eg-sparkle-xs {
+  fill: #BC2814;
+  transition: fill 0.2s ease;
 }
 
 .eg-chat-btn:hover .eg-sparkle-lg {
