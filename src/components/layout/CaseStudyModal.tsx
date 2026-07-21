@@ -14,35 +14,13 @@ export interface SearchMatch {
   reason: string;
 }
 
-const labelStyle: React.CSSProperties = {
-  margin: "0 0 6px",
-  fontSize: 10,
-  fontFamily: "Helvetica Neue",
-  fontWeight: 500,
-  letterSpacing: 1.4,
-  textTransform: "uppercase",
-  color: "var(--eg-blue-black-25)",
-};
+const labelClass =
+  "mb-1.5 text-[10px] font-helvetica font-medium tracking-[1.4px] uppercase text-eg-blue-black-25";
 
-const bodyStyle: React.CSSProperties = {
-  margin: 0,
-  fontSize: 14,
-  fontFamily: "Helvetica Neue",
-  fontWeight: 400,
-  lineHeight: "22px",
-  color: "var(--eg-blue-black)",
-};
+const bodyClass = "m-0 text-sm font-helvetica font-normal leading-[22px] text-eg-blue-black";
 
-const tagStyle: React.CSSProperties = {
-  padding: "4px 10px",
-  fontSize: 11,
-  fontFamily: "Helvetica Neue",
-  fontWeight: 400,
-  letterSpacing: 0.5,
-  border: "1px solid var(--eg-blue-black-08)",
-  color: "var(--eg-white)",
-  background: "var(--eg-red)",
-};
+const tagClass =
+  "px-2.5 py-1 text-[11px] font-helvetica font-normal tracking-[0.5px] border border-eg-blue-black-08 text-eg-white bg-eg-red";
 
 export function CaseStudyModal({ match, onClose }: { match: SearchMatch; onClose: () => void }) {
   useEffect(() => {
@@ -54,72 +32,58 @@ export function CaseStudyModal({ match, onClose }: { match: SearchMatch; onClose
   return createPortal(
     <div
       onClick={onClose}
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(10,14,20,0.55)",
-        zIndex: 1000,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+      className="fixed inset-0 bg-[rgba(10,14,20,0.55)] z-1000 flex items-center justify-center px-4"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        style={{
-          background: "var(--eg-white)",
-          width: "min(600px, 90vw)",
-          maxHeight: "80vh",
-          overflowY: "auto",
-          position: "relative",
-        }}
+        className="bg-eg-white w-[min(600px,90vw)] max-h-[80vh] overflow-y-auto relative"
       >
-        <div style={{ padding: "40px 40px 24px" }}>
-          <p style={{ margin: "0 0 12px", fontSize: 10, fontFamily: "Helvetica Neue", fontWeight: 500, letterSpacing: 1.4, textTransform: "uppercase", color: "var(--eg-red)" }}>
+        <div className="px-6 sm:px-10 pt-8 sm:pt-10 pb-6">
+          <p className="mb-3 text-[10px] font-helvetica font-medium tracking-[1.4px] uppercase text-eg-red">
             {match.industry ?? "Case Study"}
           </p>
-          <h2 style={{ margin: "0 0 8px", fontSize: 28, fontFamily: "Helvetica Neue", fontWeight: 500, lineHeight: "34px", color: "var(--eg-blue-black)" }}>
+          <h2 className="mb-2 text-2xl sm:text-[28px] font-helvetica font-medium leading-8.5 text-eg-blue-black">
             {match.title}
           </h2>
           {match.client && (
-            <p style={{ margin: 0, fontSize: 13, fontFamily: "Helvetica Neue", fontWeight: 400, color: "var(--eg-blue-black-25)" }}>
+            <p className="m-0 text-[13px] font-helvetica font-normal text-eg-blue-black-25">
               {match.client}
             </p>
           )}
         </div>
 
-        <div style={{ height: 1, background: "var(--eg-blue-black-08)", margin: "0 40px" }} />
+        <div className="h-px bg-eg-blue-black-08 mx-6 sm:mx-10" />
 
-        <div style={{ padding: "24px 40px 40px", display: "flex", flexDirection: "column", gap: 24 }}>
+        <div className="px-6 sm:px-10 pt-6 pb-8 sm:pb-10 flex flex-col gap-6">
           {match.services && match.services.length > 0 && (
             <div>
-              <p style={labelStyle}>Services</p>
-              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                {match.services.map((s) => <span key={s} style={tagStyle}>{s}</span>)}
+              <p className={labelClass}>Services</p>
+              <div className="flex gap-2 flex-wrap">
+                {match.services.map((s) => <span key={s} className={tagClass}>{s}</span>)}
               </div>
             </div>
           )}
           {match.summary && (
             <div>
-              <p style={labelStyle}>Summary</p>
-              <p style={bodyStyle}>{match.summary}</p>
+              <p className={labelClass}>Summary</p>
+              <p className={bodyClass}>{match.summary}</p>
             </div>
           )}
           {match.result && (
             <div>
-              <p style={labelStyle}>Result</p>
-              <p style={bodyStyle}>{match.result}</p>
+              <p className={labelClass}>Result</p>
+              <p className={bodyClass}>{match.result}</p>
             </div>
           )}
           <div>
-            <p style={labelStyle}>Why this matches</p>
-            <p style={bodyStyle}>{match.reason}</p>
+            <p className={labelClass}>Why this matches</p>
+            <p className={bodyClass}>{match.reason}</p>
           </div>
           <a
             href={match.url}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ alignSelf: "flex-start", marginTop: 8, padding: "12px 24px", background: "var(--eg-blue-black)", color: "var(--eg-white)", fontSize: 12, fontFamily: "Helvetica Neue", fontWeight: 500, letterSpacing: 1.2, textTransform: "uppercase", textDecoration: "none" }}
+            className="self-start mt-2 px-6 py-3 bg-eg-blue-black text-eg-white text-xs font-helvetica font-medium tracking-[1.2px] uppercase no-underline"
           >
             View Case Study ↗
           </a>
@@ -127,7 +91,7 @@ export function CaseStudyModal({ match, onClose }: { match: SearchMatch; onClose
 
         <button
           onClick={onClose}
-          style={{ position: "absolute", top: 20, right: 20, background: "none", border: "none", cursor: "pointer", fontSize: 20, color: "var(--eg-blue-black-25)", lineHeight: 1, padding: 4 }}
+          className="absolute top-5 right-5 bg-transparent border-none cursor-pointer text-xl text-eg-blue-black-25 leading-none p-1"
         >
           ✕
         </button>

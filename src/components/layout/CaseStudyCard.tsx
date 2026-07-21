@@ -18,119 +18,39 @@ export default function CaseStudyCard({
   imageBg = 'linear-gradient(135deg, var(--eg-sage-light) 0%, var(--eg-bg-light) 100%)',
 }: CaseStudyCardProps) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        outline: '1px var(--eg-blue-black-08) solid',
-        outlineOffset: '-1px',
-        overflow: 'hidden',
-      }}
-    >
+    <div className="flex flex-col lg:flex-row outline-solid outline-1 outline-eg-blue-black-08 -outline-offset-1 overflow-hidden">
       {/* Image / thumbnail side */}
       <div
-        style={{
-          width: '50%',
-          background: imageBg,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: 240,
-        }}
+        className="w-full lg:w-1/2 flex items-center justify-center min-h-60"
+        style={{ background: imageBg }}
       >
-        <span
-          style={{
-            color: 'var(--eg-sage-40)',
-            fontSize: 80,
-            fontFamily: 'Helvetica Neue',
-            fontWeight: 300,
-            lineHeight: '120px',
-          }}
-        >
+        <span className="text-eg-sage-40 text-8xl font-helvetica font-light leading-30">
           {index}
         </span>
       </div>
 
       {/* Content side */}
-      <div
-        style={{
-          width: '50%',
-          padding: 32,
-          background: 'var(--eg-white)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          style={{
-            paddingBottom: 12,
-            color: 'var(--eg-sage-dark)',
-            fontSize: 12,
-            fontFamily: 'Helvetica Neue',
-            fontWeight: 400,
-            textTransform: 'uppercase',
-            lineHeight: '16px',
-            letterSpacing: 3,
-          }}
-        >
+      <div className="w-full lg:w-1/2 p-8 bg-eg-white flex flex-col justify-center">
+        <div className="pb-3 text-eg-sage-dark text-xs font-helvetica font-normal uppercase leading-4 tracking-[3px]">
           {client}
         </div>
 
-        <h3
-          style={{
-            margin: 0,
-            paddingBottom: 12,
-            color: 'var(--eg-blue-black)',
-            fontSize: 28,
-            fontFamily: 'Helvetica Neue',
-            fontWeight: 400,
-            lineHeight: '33.60px',
-          }}
-        >
+        <h3 className="m-0 pb-3 text-eg-blue-black text-[28px] font-helvetica font-normal leading-8.4">
           {title}
         </h3>
 
-        <p
-          style={{
-            margin: 0,
-            paddingBottom: 20,
-            color: 'var(--eg-blue-black-55)',
-            fontSize: 14,
-            fontFamily: 'Helvetica Neue',
-            fontWeight: 400,
-            lineHeight: '20px',
-            letterSpacing: 0.14,
-          }}
-        >
+        <p className="m-0 pb-5 text-eg-blue-black-55 text-sm font-helvetica font-normal leading-5 tracking-[0.14px]">
           {description}
         </p>
 
         {tags.length > 0 && (
-          <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+          <div className="flex gap-2 mb-5">
             {tags.map(tag => (
               <div
                 key={tag}
-                style={{
-                  height: 30,
-                  paddingLeft: 16,
-                  paddingRight: 16,
-                  display: 'flex',
-                  alignItems: 'center',
-                  outline: '1px var(--eg-blue-black-15) solid',
-                  outlineOffset: '-1px',
-                }}
+                className="h-7.5 px-4 flex items-center outline-solid outline-1 outline-eg-blue-black-15 -outline-offset-1"
               >
-                <span
-                  style={{
-                    color: 'var(--eg-sage-dark)',
-                    fontSize: 12,
-                    fontFamily: 'Helvetica Neue',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    lineHeight: '16px',
-                    letterSpacing: 1.20,
-                  }}
-                >
+                <span className="text-eg-sage-dark text-xs font-helvetica font-medium uppercase leading-4 tracking-[1.2px]">
                   {tag}
                 </span>
               </div>
@@ -140,19 +60,7 @@ export default function CaseStudyCard({
 
         <a
           href={href}
-          style={{
-            display: 'inline-block',
-            borderBottom: '1px var(--eg-blue-black-08) solid',
-            paddingBottom: 4,
-            color: 'var(--eg-blue-black)',
-            fontSize: 12,
-            fontFamily: 'Helvetica Neue',
-            fontWeight: 400,
-            textTransform: 'uppercase',
-            lineHeight: '16px',
-            letterSpacing: 1.20,
-            textDecoration: 'none',
-          }}
+          className="inline-block border-b border-eg-blue-black-08 pb-1 text-eg-blue-black text-xs font-helvetica font-normal uppercase leading-4 tracking-[1.2px] no-underline"
         >
           View Case Study →
         </a>

@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from 'react';
-
 type ButtonVariant = 'primary' | 'outline' | 'sage' | 'ghost';
 type ButtonSize = 'sm' | 'md' | 'lg';
 type ButtonSurface = 'light' | 'dark';
@@ -13,72 +9,42 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
-const sizeStyles: Record<ButtonSize, React.CSSProperties> = {
-  sm: { paddingLeft: 16, paddingRight: 16, paddingTop: 8,  paddingBottom: 8,  fontSize: 12, lineHeight: '16px', letterSpacing: 1.20 },
-  md: { paddingLeft: 28, paddingRight: 28, paddingTop: 12, paddingBottom: 12, fontSize: 14, lineHeight: '20px', letterSpacing: 1.40 },
-  lg: { paddingLeft: 40, paddingRight: 40, paddingTop: 16, paddingBottom: 16, fontSize: 16, lineHeight: '24px', letterSpacing: 1.60 },
+const sizeClasses: Record<ButtonSize, string> = {
+  sm: 'px-4 py-2 text-xs leading-4 tracking-[1.2px]',
+  md: 'px-7 py-3 text-sm leading-5 tracking-[1.4px]',
+  lg: 'px-10 py-4 text-base leading-6 tracking-[1.6px]',
 };
 
-function getVariantStyles(variant: ButtonVariant, surface: ButtonSurface, hovered: boolean): React.CSSProperties {
-  const dark = surface === 'dark';
-
-  switch (variant) {
-    case 'primary':
-      return {
-        background: hovered ? 'var(--eg-red-dark)' : 'var(--eg-red)',
-        outline: `1px ${hovered ? 'var(--eg-red-dark)' : 'var(--eg-red)'} solid`,
-        outlineOffset: '-1px',
-        color: 'var(--eg-white)',
-      };
-    case 'outline':
-      return {
-        outline: `1px ${hovered ? 'var(--eg-sage-dark)' : dark ? 'var(--eg-white-40)' : 'var(--eg-blue-black-40)'} solid`,
-        outlineOffset: '-1px',
-        color: dark ? 'var(--eg-white)' : 'var(--eg-blue-black)',
-      };
-    case 'sage':
-      return {
-        background: hovered ? 'var(--eg-sage-light)' : 'var(--eg-sage)',
-        outline: `1px ${hovered ? 'var(--eg-sage-light)' : 'var(--eg-sage)'} solid`,
-        outlineOffset: '-1px',
-        color: 'var(--eg-blue-black)',
-      };
-    case 'ghost':
-      return {
-        color: dark ? 'var(--eg-white)' : 'var(--eg-blue-black)',
-        opacity: hovered ? 0.7 : 1,
-      };
-  }
-}
+const variantClasses: Record<ButtonVariant, Record<ButtonSurface, string>> = {
+  primary: {
+    light: 'bg-eg-red outline-solid outline-1 outline-eg-red outline-offset-[-1px] text-eg-white hover:bg-eg-red-dark hover:outline-eg-red-dark',
+    dark: 'bg-eg-red outline-solid outline-1 outline-eg-red outline-offset-[-1px] text-eg-white hover:bg-eg-red-dark hover:outline-eg-red-dark',
+  },
+  outline: {
+    light: 'outline-solid outline-1 outline-eg-blue-black-40 outline-offset-[-1px] text-eg-blue-black hover:outline-eg-sage-dark',
+    dark: 'outline-solid outline-1 outline-eg-white-40 outline-offset-[-1px] text-eg-white hover:outline-eg-sage-dark',
+  },
+  sage: {
+    light: 'bg-eg-sage outline-solid outline-1 outline-eg-sage outline-offset-[-1px] text-eg-blue-black hover:bg-eg-sage-light hover:outline-eg-sage-light',
+    dark: 'bg-eg-sage outline-solid outline-1 outline-eg-sage outline-offset-[-1px] text-eg-blue-black hover:bg-eg-sage-light hover:outline-eg-sage-light',
+  },
+  ghost: {
+    light: 'text-eg-blue-black opacity-100 hover:opacity-70',
+    dark: 'text-eg-white opacity-100 hover:opacity-70',
+  },
+};
 
 export default function Button({
   variant = 'primary',
   size = 'md',
   surface = 'light',
   children,
-  style,
+  className,
   ...rest
 }: ButtonProps) {
-  const [hovered, setHovered] = useState(false);
-
   return (
     <button
-      style={{
-        border: 'none',
-        cursor: 'pointer',
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontFamily: 'Helvetica Neue',
-        fontWeight: 500,
-        textTransform: 'uppercase',
-        transition: 'background 0.2s, outline-color 0.2s, opacity 0.2s',
-        ...sizeStyles[size],
-        ...getVariantStyles(variant, surface, hovered),
-        ...style,
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className={`border-none cursor-pointer inline-flex items-center justify-center font-helvetica font-medium uppercase transition-[background,outline-color,opacity] duration-200 ${sizeClasses[size]} ${variantClasses[variant][surface]} ${className ?? ''}`}
       {...rest}
     >
       {children}

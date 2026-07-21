@@ -1,5 +1,7 @@
 import heroImage from "../../assets/media/home/hero.png";
 
+// Reference pattern for fluid typography/spacing: prefer text-[clamp(...)] arbitrary
+// values over stepped breakpoint jumps when a value should scale continuously with viewport.
 const heroImageSrc = heroImage.src;
 
 interface HeroProps {
@@ -18,88 +20,22 @@ export default function Hero({
   imageAlt = "https://placehold.co/981x1136",
 }: HeroProps) {
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "90vh",
-        minHeight: 600,
-        background: "#F7F6F4",
-        display: "flex",
-        overflow: "hidden",
-      }}
-    >
+    <div className="w-full h-[90vh] min-h-150 bg-eg-bg-light flex flex-col lg:flex-row overflow-hidden">
       {/* Left — content */}
-      <div
-        style={{
-          width: "50%",
-          flexShrink: 0,
-          minWidth: 0,
-          boxSizing: "border-box",
-          overflow: "hidden",
-          paddingTop: 80,
-          paddingBottom: 80,
-          paddingLeft: "clamp(24px, 9vw, 184px)",
-          paddingRight: "clamp(24px, 4vw, 64px)",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "flex-start",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 32,
-            width: "100%",
-            minWidth: 0,
-          }}
-        >
+      <div className="w-full lg:w-1/2 shrink-0 min-w-0 box-border overflow-hidden py-12 lg:py-20 pl-[clamp(24px,9vw,184px)] pr-[clamp(24px,4vw,64px)] flex flex-col justify-center items-start">
+        <div className="flex flex-col gap-8 w-full min-w-0">
           {/* Heading */}
-          <div style={{ width: "100%", maxWidth: 556 }}>
-            <span
-              style={{
-                color: "rgba(25,28,37,0.95)",
-                fontSize: "clamp(36px, 6vw, 96px)",
-                fontFamily:
-                  "'Test Die Grotesk A', 'Helvetica Neue', sans-serif",
-                fontWeight: 700,
-                lineHeight: 1.1,
-                wordWrap: "break-word",
-              }}
-            >
+          <div className="w-full max-w-139">
+            <span className="text-eg-blue-black-95 text-[clamp(36px,6vw,96px)] font-grotesk-a font-bold leading-[1.1] wrap-break-word">
               {title}{" "}
             </span>
-            <span
-              style={{
-                color: "var(--eg-red)",
-                fontSize: "clamp(36px, 6vw, 96px)",
-                fontFamily:
-                  "'Test Die Grotesk A', 'Helvetica Neue', sans-serif",
-                fontWeight: 700,
-                lineHeight: 1.1,
-                wordWrap: "break-word",
-              }}
-            >
+            <span className="text-eg-red text-[clamp(36px,6vw,96px)] font-grotesk-a font-bold leading-[1.1] wrap-break-word">
               {subtitle}
             </span>
           </div>
 
           {/* Body */}
-          <p
-            style={{
-              margin: 0,
-              width: "100%",
-              maxWidth: 503,
-              color: "rgba(25,28,37,0.95)",
-              fontSize: "clamp(16px, 1.6vw, 24px)",
-              fontFamily: "Helvetica Neue, sans-serif",
-              fontWeight: 400,
-              lineHeight: 1.3,
-              letterSpacing: 0.16,
-              wordWrap: "break-word",
-            }}
-          >
+          <p className="m-0 w-full max-w-125.75 text-eg-blue-black-95 text-[clamp(16px,1.6vw,24px)] font-helvetica font-normal leading-[1.3] tracking-[0.16px] wrap-break-word">
             {body}
           </p>
         </div>
@@ -109,21 +45,8 @@ export default function Hero({
       <div
         role="img"
         aria-label={imageAlt}
-        style={{
-          width: "50%",
-          flexShrink: 0,
-          minWidth: 0,
-          boxSizing: "border-box",
-          paddingLeft: 40,
-          paddingRight: 40,
-          overflow: "hidden",
-          backgroundImage: `url(${imageSrc})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        className="w-full h-64 sm:h-80 lg:h-auto lg:w-1/2 shrink-0 min-w-0 box-border px-10 overflow-hidden bg-cover bg-center flex justify-center items-center"
+        style={{ backgroundImage: `url(${imageSrc})` }}
       ></div>
     </div>
   );

@@ -4,10 +4,10 @@ import Navigation from "@/components/layout/Navigation";
 import { type NavLink } from "@/api/models";
 
 const NAV_LINKS: NavLink[] = [
-  { label: "Home", href: "/" },
+  { label: "Work", href: "/work" },
+  { label: "What we do", href: "/what-we-do" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
-  { label: "StyleSheet", href: "/stylesheet" },
 ];
 
 export const metadata: Metadata = {
@@ -19,7 +19,11 @@ export const metadata: Metadata = {
   icons: { icon: "/favicon.svg" },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>

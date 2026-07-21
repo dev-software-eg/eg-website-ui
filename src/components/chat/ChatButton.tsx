@@ -69,23 +69,11 @@ export default function ChatButton() {
 
 
   return (
-    <div style={{ position: "relative", width: 64, flexShrink: 0 }}>
+    <div className="relative w-16 shrink-0">
       {/* Toggle button */}
       <button
-        className={`eg-chat-btn${open ? " eg-chat-btn--open" : ""}`}
+        className={`eg-chat-btn${open ? " eg-chat-btn--open" : ""} absolute inset-0 bg-transparent border-none cursor-pointer flex items-center justify-center p-0 transition-colors`}
         onClick={() => setOpen((prev) => !prev)}
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: "transparent",
-          border: "none",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: 0,
-          transition: "background 0.2s",
-        }}
       >
         <ChatIcon />
       </button>
@@ -93,73 +81,27 @@ export default function ChatButton() {
       {/* Chat panel */}
       {open && (
         <div
-          style={{
-            position: fullscreen ? "fixed" : "absolute",
-            top: fullscreen ? 0 : "100%",
-            right: 0,
-            left: fullscreen ? 0 : "auto",
-            bottom: fullscreen ? 0 : "auto",
-            width: fullscreen ? "100vw" : 380,
-            height: fullscreen ? "100vh" : 500,
-            background: "var(--eg-white)",
-            boxShadow: "0 8px 40px rgba(10,14,20,0.18)",
-            display: "flex",
-            flexDirection: "column",
-            zIndex: 100,
-          }}
+          className={`bg-eg-white shadow-[0_8px_40px_rgba(10,14,20,0.18)] flex flex-col z-100 ${
+            fullscreen
+              ? "fixed inset-0 w-screen h-screen"
+              : "absolute top-full right-0 w-[min(380px,calc(100vw-32px))] h-[min(500px,70vh)]"
+          }`}
         >
           {/* Header */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "16px 20px",
-              borderBottom: "1px solid var(--eg-blue-black-08)",
-              flexShrink: 0,
-            }}
-          >
+          <div className="flex items-center justify-between px-5 py-4 border-b border-eg-blue-black-08 shrink-0">
             <div>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: 13,
-                  fontFamily: "Helvetica Neue",
-                  fontWeight: 500,
-                  color: "var(--eg-blue-black)",
-                  lineHeight: "18px",
-                }}
-              >
+              <p className="m-0 text-[13px] font-helvetica font-medium text-eg-blue-black leading-4.5">
                 Ask us anything
               </p>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: 11,
-                  fontFamily: "Helvetica Neue",
-                  fontWeight: 400,
-                  color: "var(--eg-blue-black-25)",
-                }}
-              >
+              <p className="m-0 text-[11px] font-helvetica font-normal text-eg-blue-black-25">
                 Estipona Group AI
               </p>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <div className="flex items-center gap-1">
               {messages.length > 0 && (
                 <button
                   onClick={reset}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    fontSize: 10,
-                    fontFamily: "Helvetica Neue",
-                    fontWeight: 500,
-                    letterSpacing: 1.2,
-                    textTransform: "uppercase",
-                    color: "var(--eg-blue-black-25)",
-                    padding: "4px 8px",
-                  }}
+                  className="bg-transparent border-none cursor-pointer text-[10px] font-helvetica font-medium tracking-[1.2px] uppercase text-eg-blue-black-25 px-2 py-1"
                 >
                   Clear
                 </button>
@@ -167,15 +109,7 @@ export default function ChatButton() {
               <button
                 onClick={() => setFullscreen((prev) => !prev)}
                 title={fullscreen ? "Collapse" : "Expand"}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: 28,
-                  color: "var(--eg-blue-black-25)",
-                  padding: "4px 8px",
-                  lineHeight: 1,
-                }}
+                className="bg-transparent border-none cursor-pointer text-[28px] text-eg-blue-black-25 px-2 py-1 leading-none"
               >
                 {fullscreen ? "⤡" : "⤢"}
               </button>
@@ -185,50 +119,23 @@ export default function ChatButton() {
           {/* Messages */}
           <div
             ref={messagesContainerRef}
-            style={{
-              flex: 1,
-              overflowY: "auto",
-              padding: "16px 20px",
-              display: "flex",
-              flexDirection: "column",
-              gap: 12,
-            }}
+            className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-3"
           >
             {messages.length === 0 && (
-              <p
-                style={{
-                  margin: "auto",
-                  textAlign: "center",
-                  fontSize: 13,
-                  fontFamily: "Helvetica Neue",
-                  fontWeight: 400,
-                  color: "var(--eg-blue-black-25)",
-                  lineHeight: "20px",
-                }}
-              >
+              <p className="m-auto text-center text-[13px] font-helvetica font-normal text-eg-blue-black-25 leading-5">
                 What can we help you with?
               </p>
             )}
 
             {messages.map((msg, i) => (
               <React.Fragment key={i}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
-                  }}
-                >
+                <div className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                   <div
-                    style={{
-                      maxWidth: "78%",
-                      padding: "10px 14px",
-                      background: msg.role === "user" ? "var(--eg-blue-black)" : "var(--eg-bg-gray)",
-                      color: msg.role === "user" ? "var(--eg-white)" : "var(--eg-blue-black)",
-                      fontSize: 13,
-                      fontFamily: "Helvetica Neue",
-                      fontWeight: 400,
-                      lineHeight: "20px",
-                    }}
+                    className={`max-w-[78%] px-3.5 py-2.5 text-[13px] font-helvetica font-normal leading-5 ${
+                      msg.role === "user"
+                        ? "bg-eg-blue-black text-eg-white"
+                        : "bg-eg-bg-gray text-eg-blue-black"
+                    }`}
                   >
                     {msg.role === "user" ? (
                       msg.content
@@ -236,14 +143,14 @@ export default function ChatButton() {
                       <ReactMarkdown
                         remarkPlugins={[remarkBreaks]}
                         components={{
-                          h1: ({ children }) => <p style={{ margin: "0 0 8px", fontWeight: 600, fontSize: 14 }}>{children}</p>,
-                          h2: ({ children }) => <p style={{ margin: "8px 0 4px", fontWeight: 600, fontSize: 13 }}>{children}</p>,
-                          h3: ({ children }) => <p style={{ margin: "8px 0 4px", fontWeight: 600, fontSize: 12 }}>{children}</p>,
-                          p: ({ children }) => <p style={{ margin: "0 0 8px" }}>{children}</p>,
-                          ul: ({ children }) => <ul style={{ margin: "0 0 8px", paddingLeft: 18 }}>{children}</ul>,
-                          ol: ({ children }) => <ol style={{ margin: "0 0 8px", paddingLeft: 18 }}>{children}</ol>,
-                          li: ({ children }) => <li style={{ marginBottom: 4 }}>{children}</li>,
-                          strong: ({ children }) => <strong style={{ fontWeight: 600 }}>{children}</strong>,
+                          h1: ({ children }) => <p className="m-0 mb-2 font-semibold text-sm">{children}</p>,
+                          h2: ({ children }) => <p className="mt-2 mb-1 font-semibold text-[13px]">{children}</p>,
+                          h3: ({ children }) => <p className="mt-2 mb-1 font-semibold text-xs">{children}</p>,
+                          p: ({ children }) => <p className="m-0 mb-2">{children}</p>,
+                          ul: ({ children }) => <ul className="m-0 mb-2 pl-4.5">{children}</ul>,
+                          ol: ({ children }) => <ol className="m-0 mb-2 pl-4.5">{children}</ol>,
+                          li: ({ children }) => <li className="mb-1">{children}</li>,
+                          strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
                         }}
                       >
                         {msg.content}
@@ -259,20 +166,18 @@ export default function ChatButton() {
 
                 {/* Case studies pinned inline at the position they were triggered */}
                 {i === caseStudiesAfterIndex && caseStudies.length > 0 && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-                    <p style={{ margin: "0 0 8px", fontSize: 10, fontFamily: "Helvetica Neue", fontWeight: 500, letterSpacing: 1.4, textTransform: "uppercase", color: "var(--eg-red)" }}>
+                  <div className="flex flex-col gap-0">
+                    <p className="m-0 mb-2 text-[10px] font-helvetica font-medium tracking-[1.4px] uppercase text-eg-red">
                       Related Work
                     </p>
                     {caseStudies.map((match, j) => (
                       <button
                         key={j}
                         onClick={() => setSelected(match)}
-                        style={{ display: "block", width: "100%", textAlign: "left", padding: "12px 14px", border: "none", borderBottom: "1px solid var(--eg-blue-black-08)", background: "var(--eg-bg-gray)", cursor: "pointer", transition: "background 0.15s" }}
-                        onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.06)")}
-                        onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.background = "var(--eg-bg-gray)")}
+                        className="block w-full text-left px-3.5 py-3 border-none border-b border-eg-blue-black-08 bg-eg-bg-gray cursor-pointer transition-colors hover:bg-eg-blue-black-06"
                       >
-                        <p style={{ margin: "0 0 3px", fontSize: 13, fontFamily: "Helvetica Neue", fontWeight: 500, lineHeight: "18px", color: "var(--eg-blue-black)" }}>{match.title}</p>
-                        <p style={{ margin: 0, fontSize: 11, fontFamily: "Helvetica Neue", fontWeight: 400, lineHeight: "16px", color: "var(--eg-blue-black-25)" }}>{match.reason}</p>
+                        <p className="m-0 mb-0.75 text-[13px] font-helvetica font-medium leading-4.5 text-eg-blue-black">{match.title}</p>
+                        <p className="m-0 text-[11px] font-helvetica font-normal leading-4 text-eg-blue-black-25">{match.reason}</p>
                       </button>
                     ))}
                   </div>
@@ -281,15 +186,15 @@ export default function ChatButton() {
             ))}
 
             {isLoading && (
-              <div style={{ display: "flex", justifyContent: "flex-start" }}>
-                <div style={{ padding: "10px 14px", background: "var(--eg-bg-gray)", color: "var(--eg-red)" }}>
+              <div className="flex justify-start">
+                <div className="px-3.5 py-2.5 bg-eg-bg-gray text-eg-red">
                   <Loading size="small" />
                 </div>
               </div>
             )}
 
             {error && (
-              <p style={{ margin: 0, fontSize: 12, fontFamily: "Helvetica Neue", color: "var(--eg-red)", textAlign: "center" }}>
+              <p className="m-0 text-xs font-helvetica text-eg-red text-center">
                 {error}
               </p>
             )}
@@ -298,13 +203,7 @@ export default function ChatButton() {
           </div>
 
           {/* Input */}
-          <div
-            style={{
-              display: "flex",
-              borderTop: "1px solid var(--eg-blue-black-08)",
-              flexShrink: 0,
-            }}
-          >
+          <div className="flex border-t border-eg-blue-black-08 shrink-0">
             <input
               ref={inputRef}
               type="text"
@@ -313,35 +212,18 @@ export default function ChatButton() {
               onKeyDown={handleKeyDown}
               placeholder="Type a message…"
               disabled={isLoading}
-              style={{
-                flex: 1,
-                padding: "14px 16px",
-                border: "none",
-                outline: "none",
-                fontSize: 13,
-                fontFamily: "Helvetica Neue",
-                fontWeight: 400,
-                color: "var(--eg-blue-black)",
-                background: "var(--eg-white)",
-                cursor: isLoading ? "wait" : "text",
-              }}
+              className={`flex-1 px-4 py-3.5 border-none outline-none text-[13px] font-helvetica font-normal text-eg-blue-black bg-eg-white ${
+                isLoading ? "cursor-wait" : "cursor-text"
+              }`}
             />
             <button
               onClick={handleSend}
               disabled={isLoading || !input.trim()}
-              style={{
-                padding: "0 20px",
-                background:
-                  isLoading || !input.trim()
-                    ? "var(--eg-bg-gray)"
-                    : "var(--eg-blue-black)",
-                border: "none",
-                cursor: isLoading || !input.trim() ? "default" : "pointer",
-                color: "var(--eg-white)",
-                fontSize: 18,
-                transition: "background 0.15s",
-                flexShrink: 0,
-              }}
+              className={`px-5 border-none text-eg-white text-lg transition-colors shrink-0 ${
+                isLoading || !input.trim()
+                  ? "bg-eg-bg-gray cursor-default"
+                  : "bg-eg-blue-black cursor-pointer"
+              }`}
             >
               ↑
             </button>

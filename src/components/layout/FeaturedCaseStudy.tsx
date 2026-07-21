@@ -1,19 +1,17 @@
 "use client";
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect } from "react";
+import { Tag, type TagVariant } from "../ui/Tag";
 
-const GROTESK_A: React.CSSProperties['fontFamily'] = '"Test Die Grotesk A", "Helvetica Neue", sans-serif';
-const GROTESK_B: React.CSSProperties['fontFamily'] = '"Test Die Grotesk B", "Helvetica Neue", sans-serif';
-
-interface Tag {
+interface TagItem {
   label: string;
-  variant: 'outline' | 'filled';
+  variant: TagVariant;
 }
 
 interface FeaturedCaseStudyProps {
   eyebrow?: string;
   heading?: string;
-  tags?: Tag[];
+  tags?: TagItem[];
   projectName?: string;
   imageSrc?: string;
   imageAlt?: string;
@@ -26,209 +24,107 @@ interface FeaturedCaseStudyProps {
 }
 
 export default function FeaturedCaseStudy({
-  eyebrow = 'Featured Case Study',
-  heading = 'Giving an arts advocacy organization the life and heart it deserves.',
+  eyebrow = "Featured Case Study",
+  heading = "Giving an arts advocacy organization the life and heart it deserves.",
   tags = [
-    { label: 'Fun', variant: 'outline' },
-    { label: 'Creative', variant: 'filled' },
-    { label: 'Collaborative', variant: 'outline' },
+    { label: "Fun", variant: "outline" },
+    { label: "Creative", variant: "filled" },
+    { label: "Collaborative", variant: "outline" },
   ],
-  projectName = 'Nevada Arts Council Branding',
+  projectName = "Nevada Arts Council Branding",
   imageSrc,
-  imageAlt = 'Case study image',
-  client = 'Nevada Arts Council',
-  caseStudyHref = '#',
+  imageAlt = "Case study image",
+  client = "Nevada Arts Council",
+  caseStudyHref = "#",
   quoteStart = '"When a partner cares about your brand as much as you do, working together is a joy. Meeting with Estipona Group to work on this project was the ',
-  quoteHighlight = 'best part of my week',
+  quoteHighlight = "best part of my week",
   quoteEnd = '."',
-  attribution = 'Tony Manfredi — Executive Director, Nevada Arts Council',
+  attribution = "Tony Manfredi — Executive Director, Nevada Arts Council",
 }: FeaturedCaseStudyProps) {
   const quoteRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = quoteRef.current;
     if (!el) return;
+
+    let hasScrolled = false;
+    let isIntersecting = false;
+
+    const tryReveal = () => {
+      if (!hasScrolled || !isIntersecting) return;
+      el.style.opacity = "1";
+      cleanup();
+    };
+
+    const onScroll = () => {
+      hasScrolled = true;
+      tryReveal();
+    };
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          el.style.opacity = '1';
-          el.style.transform = 'translateX(0)';
-          observer.disconnect();
-        }
+        isIntersecting = entry.isIntersecting;
+        tryReveal();
       },
-      { threshold: 0.2 },
+      { threshold: 0.9 },
     );
+
+    function cleanup() {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
     observer.observe(el);
-    return () => observer.disconnect();
+
+    return cleanup;
   }, []);
 
   return (
-    <div
-      style={{
-        width: '100%',
-        paddingTop: 120,
-        paddingBottom: 120,
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        background: 'var(--eg-white)',
-      }}
-    >
-      <div
-        style={{
-          width: '100%',
-          maxWidth: 1280,
-          paddingLeft: 64,
-          paddingRight: 64,
-          boxSizing: 'border-box',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
+    <div className="w-full py-16 sm:py-20 lg:py-30 overflow-hidden flex flex-col justify-center items-center bg-eg-white">
+      <div className="w-full max-w-7xl px-6 sm:px-10 lg:px-16 box-border flex flex-col items-center">
         {/* Top two-column header */}
-        <div
-          style={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-            gap: 48,
-          }}
-        >
+        <div className="w-full flex flex-col lg:flex-row justify-start items-start gap-8 lg:gap-12">
           {/* Left — eyebrow + heading */}
-          <div
-            style={{
-              width: 644,
-              flexShrink: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-end',
-              alignItems: 'flex-start',
-            }}
-          >
-            <span
-              style={{
-                color: 'var(--eg-red)',
-                fontSize: 12,
-                fontFamily: 'Helvetica Neue, sans-serif',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                lineHeight: '19.2px',
-                letterSpacing: 3,
-              }}
-            >
+          <div className="w-full lg:w-161 lg:shrink-0 flex flex-col justify-end items-start">
+            <span className="text-eg-red text-xs font-helvetica font-bold uppercase leading-[19.2px] tracking-[3px]">
               {eyebrow}
             </span>
 
-            <h2
-              style={{
-                margin: '12px 0 0',
-                maxWidth: 595,
-                color: 'var(--eg-blue-black-95)',
-                fontSize: 48,
-                fontFamily: GROTESK_A,
-                fontWeight: 500,
-                lineHeight: '52.8px',
-              }}
-            >
+            <h2 className="mt-3 mb-0 max-w-148.75 text-eg-blue-black-95 text-3xl sm:text-4xl lg:text-[48px] font-grotesk-a font-medium lg:leading-[52.8px]">
               {heading}
             </h2>
           </div>
 
           {/* Right — tags + project name */}
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-end',
-              alignItems: 'flex-end',
-              gap: 24,
-            }}
-          >
+          <div className="flex-1 w-full flex flex-col justify-end items-start lg:items-end gap-6">
             {/* Tags */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              {tags.map(tag => (
-                <div
-                  key={tag.label}
-                  style={{
-                    paddingLeft: 12,
-                    paddingRight: 12,
-                    paddingTop: 7,
-                    paddingBottom: 7,
-                    background: tag.variant === 'filled' ? 'var(--eg-red)' : 'transparent',
-                    outline: tag.variant === 'outline' ? '1.5px rgba(25,28,37,0.95) solid' : 'none',
-                    outlineOffset: '-1.5px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <span
-                    style={{
-                      color: tag.variant === 'filled' ? 'var(--eg-bg-light)' : 'var(--eg-blue-black-95)',
-                      fontSize: 12.5,
-                      fontFamily: GROTESK_B,
-                      fontWeight: 500,
-                      lineHeight: '16.5px',
-                      letterSpacing: 0.5,
-                    }}
-                  >
-                    {tag.label}
-                  </span>
-                </div>
+            <div className="flex items-center gap-3">
+              {tags.map((tag) => (
+                <Tag key={tag.label} label={tag.label} variant={tag.variant} />
               ))}
             </div>
 
             {/* Project name */}
-            <p
-              style={{
-                margin: 0,
-                textAlign: 'right',
-                color: 'var(--eg-blue-black-95)',
-                fontSize: 24,
-                fontFamily: 'Helvetica Neue, sans-serif',
-                fontWeight: 400,
-                lineHeight: '30px',
-                letterSpacing: 0.16,
-              }}
-            >
+            <p className="m-0 text-left lg:text-right text-eg-blue-black-95 text-2xl font-helvetica font-normal leading-7.5 tracking-[0.16px]">
               {projectName}
             </p>
           </div>
         </div>
 
         {/* Image */}
-        <div style={{ width: '100%', paddingTop: 40 }}>
+        <div className="w-full pt-10">
           <div
+            className="w-full aspect-1280/465 rounded-[13px] overflow-hidden bg-cover bg-center flex items-center justify-center"
             style={{
-              width: '100%',
-              height: 465,
-              borderRadius: 13,
-              overflow: 'hidden',
-              background: imageSrc ? undefined : 'var(--eg-bg-gray)',
+              background: imageSrc ? undefined : "var(--eg-bg-gray)",
               backgroundImage: imageSrc ? `url(${imageSrc})` : undefined,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              backgroundSize: imageSrc ? "cover" : undefined,
+              backgroundPosition: imageSrc ? "center" : undefined,
             }}
           >
             {!imageSrc && (
-              <span
-                style={{
-                  color: 'var(--eg-blue-black-25)',
-                  fontSize: 14,
-                  fontFamily: 'Helvetica Neue, sans-serif',
-                  fontWeight: 400,
-                  textTransform: 'uppercase',
-                  letterSpacing: 2,
-                }}
-              >
+              <span className="text-eg-blue-black-25 text-sm font-helvetica font-normal uppercase tracking-[2px]">
                 {imageAlt}
               </span>
             )}
@@ -236,54 +132,15 @@ export default function FeaturedCaseStudy({
         </div>
 
         {/* Bottom section */}
-        <div
-          style={{
-            width: '100%',
-            paddingTop: 24,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 16,
-          }}
-        >
+        <div className="w-full pt-6 flex flex-col items-center gap-4">
           {/* Client row + CTA */}
-          <div
-            style={{
-              width: '100%',
-              paddingTop: 24,
-              paddingBottom: 24,
-              borderBottom: '1.5px #EEEEEE solid',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
+          <div className="w-full py-6 border-b-[1.5px] border-[#EEEEEE] flex justify-between items-center">
             {/* Client */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span
-                style={{
-                  color: '#AAAAAA',
-                  fontSize: 12,
-                  fontFamily: 'Helvetica Neue, sans-serif',
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  lineHeight: '19.2px',
-                  letterSpacing: 3,
-                }}
-              >
+            <div className="flex flex-col">
+              <span className="text-[#AAAAAA] text-xs font-helvetica font-bold uppercase leading-[19.2px] tracking-[3px]">
                 Client
               </span>
-              <span
-                style={{
-                  paddingTop: 4,
-                  color: 'var(--eg-blue-black)',
-                  fontSize: 24,
-                  fontFamily: 'Helvetica Neue, sans-serif',
-                  fontWeight: 400,
-                  lineHeight: '30px',
-                  letterSpacing: 0.16,
-                }}
-              >
+              <span className="pt-1 text-eg-blue-black text-2xl font-helvetica font-normal leading-7.5 tracking-[0.16px]">
                 {client}
               </span>
             </div>
@@ -291,44 +148,12 @@ export default function FeaturedCaseStudy({
             {/* CTA */}
             <a
               href={caseStudyHref}
-              style={{
-                paddingLeft: 24,
-                paddingRight: 24,
-                paddingTop: 14,
-                paddingBottom: 14,
-                outline: '1.5px rgba(25,28,37,0.95) solid',
-                outlineOffset: '-1.5px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                textDecoration: 'none',
-                color: 'var(--eg-blue-black-95)',
-                transition: 'background 0.2s',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = 'var(--eg-blue-black-06)')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+              className="px-6 py-3.5 outline-solid outline-[1.5px] outline-eg-blue-black-95 outline-offset-[-1.5px] flex items-center gap-2 no-underline text-eg-blue-black-95 transition-colors hover:bg-eg-blue-black-06"
             >
-              <span
-                style={{
-                  fontSize: 12.5,
-                  fontFamily: GROTESK_B,
-                  fontWeight: 500,
-                  lineHeight: '16.5px',
-                  letterSpacing: 0.5,
-                }}
-              >
+              <span className="text-[12.5px] font-grotesk-b font-medium leading-[16.5px] tracking-[0.5px]">
                 View the case study
               </span>
-              <span
-                style={{
-                  fontSize: 12,
-                  fontFamily: 'DM Sans, sans-serif',
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  lineHeight: '18px',
-                  letterSpacing: 1.2,
-                }}
-              >
+              <span className="text-xs font-dm-sans font-bold uppercase leading-4.5 tracking-[1.2px]">
                 ↗
               </span>
             </a>
@@ -337,44 +162,15 @@ export default function FeaturedCaseStudy({
           {/* Quote block */}
           <div
             ref={quoteRef}
-            style={{
-              paddingTop: 36,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 24,
-              opacity: 0,
-              transform: 'translateX(48px)',
-              transition: 'opacity 0.7s ease, transform 0.7s ease',
-            }}
+            className="w-full pt-9 flex flex-col items-center gap-6 opacity-0 transition-opacity duration-7000 ease-out"
           >
-            <p
-              style={{
-                margin: 0,
-                maxWidth: 868,
-                textAlign: 'center',
-                fontSize: 32,
-                fontFamily: GROTESK_A,
-                fontWeight: 400,
-                lineHeight: '38px',
-              }}
-            >
-              <span style={{ color: 'var(--eg-blue-black-95)' }}>{quoteStart}</span>
-              <span style={{ color: 'var(--eg-red)' }}>{quoteHighlight}</span>
-              <span style={{ color: 'var(--eg-blue-black-95)' }}>{quoteEnd}</span>
+            <p className="m-0 w-full max-w-217 mx-auto text-center text-xl sm:text-2xl lg:text-[32px] font-grotesk-a font-normal lg:leading-9.5">
+              <span className="text-eg-blue-black-95">{quoteStart}</span>
+              <span className="text-eg-red">{quoteHighlight}</span>
+              <span className="text-eg-blue-black-95">{quoteEnd}</span>
             </p>
 
-            <span
-              style={{
-                color: '#999999',
-                fontSize: 12,
-                fontFamily: 'Helvetica Neue, sans-serif',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                lineHeight: '19.2px',
-                letterSpacing: 3,
-              }}
-            >
+            <span className="text-[#999999] text-xs font-helvetica font-bold uppercase leading-[19.2px] tracking-[3px]">
               {attribution}
             </span>
           </div>

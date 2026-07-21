@@ -12,7 +12,7 @@ export default async function FeaturedCaseStudyConnected() {
   );
 
   if (!data) {
-    return <div style={{ width: '100%', minHeight: 1250, background: 'var(--eg-white)' }} />;
+    return <div className="w-full min-h-312.5 bg-eg-white" />;
   }
 
   return (
