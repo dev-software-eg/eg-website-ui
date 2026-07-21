@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import type { SearchMatch } from "../components/CaseStudyModal";
 
 export interface ChatMessage {
@@ -10,10 +10,13 @@ export function useChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showContactForm, setShowContactForm] = useState(false);
+  // Index in messages array after which the contact form should appear; null = not shown
+  const [contactFormAfterIndex, setContactFormAfterIndex] = useState<number | null>(null);
+  const contactFormSetRef = useRef(false);
   const [needsSummary, setNeedsSummary] = useState<string | null>(null);
-  const [hasCaseStudies, setHasCaseStudies] = useState(false);
+  const [caseStudiesAfterIndex, setCaseStudiesAfterIndex] = useState<number | null>(null);
   const [caseStudies, setCaseStudies] = useState<SearchMatch[]>([]);
+  const caseStudiesSetRef = useRef(false);
 
   const sendMessage = useCallback(
     async (content: string) => {
@@ -29,17 +32,24 @@ export function useChat() {
           body: JSON.stringify({ messages: next }),
         });
         const data = await res.json();
-        if (data.showContactForm) setShowContactForm(true);
-        if (data.needsSummary) setNeedsSummary(data.needsSummary);
-        if (data.hasCaseStudies && Array.isArray(data.caseStudies)) {
-          setHasCaseStudies(true);
-          setCaseStudies(data.caseStudies);
+
+        const updatedMessages: ChatMessage[] = data.messages ?? [
+          ...next,
+          { role: "assistant", content: data.reply ?? data.message ?? data.content ?? "No response." },
+        ];
+        setMessages(updatedMessages);
+
+        // Only pin the form once — ignore subsequent responses with showContactForm: true
+        if (data.showContactForm && !contactFormSetRef.current) {
+          contactFormSetRef.current = true;
+          setContactFormAfterIndex(updatedMessages.length - 1);
+          if (data.needsSummary) setNeedsSummary(data.needsSummary);
         }
-        if (data.messages) {
-          setMessages(data.messages);
-        } else {
-          const reply = data.reply ?? data.message ?? data.content ?? "No response.";
-          setMessages([...next, { role: "assistant", content: reply }]);
+
+        if (data.hasCaseStudies && Array.isArray(data.caseStudies) && !caseStudiesSetRef.current) {
+          caseStudiesSetRef.current = true;
+          setCaseStudiesAfterIndex(updatedMessages.length - 1);
+          setCaseStudies(data.caseStudies);
         }
       } catch {
         setError("Failed to get a response. Please try again.");
@@ -53,11 +63,13 @@ export function useChat() {
   const reset = useCallback(() => {
     setMessages([]);
     setError(null);
-    setShowContactForm(false);
+    setContactFormAfterIndex(null);
+    contactFormSetRef.current = false;
     setNeedsSummary(null);
-    setHasCaseStudies(false);
+    setCaseStudiesAfterIndex(null);
     setCaseStudies([]);
+    caseStudiesSetRef.current = false;
   }, []);
 
-  return { messages, isLoading, error, showContactForm, needsSummary, hasCaseStudies, caseStudies, sendMessage, reset };
+  return { messages, isLoading, error, contactFormAfterIndex, needsSummary, caseStudiesAfterIndex, caseStudies, sendMessage, reset };
 }
