@@ -1,6 +1,6 @@
 import Button from "../components/ui/Button";
 import Hero from "../components/layout/Hero";
-import WhatWeDo from "../components/WhatWeDo";
+import WhatWeDo from "../components/layout/WhatWeDo";
 import FeaturedCaseStudyConnected from "../components/layout/FeaturedCaseStudyConnected";
 export default function Home() {
   return (
