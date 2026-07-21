@@ -73,7 +73,7 @@ export default function Navigation({ links = DEFAULT_LINKS }: NavigationProps) {
         })}
       </div>
       <ConversationButton />
-      <SearchButton />
+      {/* <SearchButton /> */}
     </nav>
   );
 }

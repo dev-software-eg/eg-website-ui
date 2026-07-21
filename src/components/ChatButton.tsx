@@ -4,6 +4,7 @@ import remarkBreaks from "remark-breaks";
 import { useChat } from "../hooks/useChat";
 import { Loading } from "./Loading";
 import { CaseStudyModal, type SearchMatch } from "./CaseStudyModal";
+import aiIcon from "../assets/ai-icon.svg";
 
 const contactInputStyle: React.CSSProperties = {
   padding: "10px 12px",
@@ -18,22 +19,24 @@ const contactInputStyle: React.CSSProperties = {
   boxSizing: "border-box",
 };
 
-const ChatIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path
-      d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z"
-      stroke="white"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
+const ChatIcon = () => <img src={aiIcon} alt="AI Icon" />;
+// const ChatIcon = () => (
+//   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+//     <path
+//       d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z"
+//       stroke="white"
+//       strokeWidth="1.5"
+//       strokeLinecap="round"
+//       strokeLinejoin="round"
+//     />
+//   </svg>
+// );
 
 export default function ChatButton() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const {
     messages,
@@ -56,7 +59,8 @@ export default function ChatButton() {
   }, [open]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = messagesContainerRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [messages, isLoading]);
 
   const handleSend = () => {
@@ -87,7 +91,7 @@ export default function ChatButton() {
         style={{
           position: "absolute",
           inset: 0,
-          background: open ? "var(--eg-red)" : "var(--eg-blue-black)",
+          background: "transparent",
           border: "none",
           cursor: "pointer",
           display: "flex",
@@ -175,6 +179,7 @@ export default function ChatButton() {
 
           {/* Messages */}
           <div
+            ref={messagesContainerRef}
             style={{
               flex: 1,
               overflowY: "auto",
