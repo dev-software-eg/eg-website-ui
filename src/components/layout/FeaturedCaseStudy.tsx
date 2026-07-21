@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useEffect } from 'react';
 
 const GROTESK_A: React.CSSProperties['fontFamily'] = '"Test Die Grotesk A", "Helvetica Neue", sans-serif';

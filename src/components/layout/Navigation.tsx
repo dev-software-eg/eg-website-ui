@@ -1,5 +1,8 @@
+"use client";
+
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { type NavLink } from "../../api/models";
 import egLogo from "../../assets/eg-logo.svg";
 import ConversationButton from "../chat/ChatButton";
@@ -16,7 +19,7 @@ const DEFAULT_LINKS: NavLink[] = [
 ];
 
 export default function Navigation({ links = DEFAULT_LINKS }: NavigationProps) {
-  const { pathname } = useLocation();
+  const pathname = usePathname();
   const [hoveredHref, setHoveredHref] = useState<string | null>(null);
 
   return (
@@ -33,8 +36,8 @@ export default function Navigation({ links = DEFAULT_LINKS }: NavigationProps) {
         justifyContent: "space-between",
       }}
     >
-      <Link to="/" style={{ display: "flex", alignItems: "center" }}>
-        <img src={egLogo} alt="EG Studio Logo" style={{ height: 40 }} />
+      <Link href="/" style={{ display: "flex", alignItems: "center" }}>
+        <img src={egLogo.src} alt="EG Studio Logo" style={{ height: 40 }} />
       </Link>
 
       <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
@@ -50,7 +53,7 @@ export default function Navigation({ links = DEFAULT_LINKS }: NavigationProps) {
           return (
             <Link
               key={href}
-              to={href}
+              href={href}
               style={{
                 color,
                 fontSize: 12,

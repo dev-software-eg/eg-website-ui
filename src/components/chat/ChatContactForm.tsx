@@ -1,6 +1,8 @@
+"use client";
+
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
-import type { ChatMessage } from "../hooks/useChat";
+import type { ChatMessage } from "../../hooks/useChat";
 
 interface ChatContactFormProps {
   needsSummary?: string | null;
@@ -41,8 +43,8 @@ export function ChatContactForm({ needsSummary, messages = [] }: ChatContactForm
     setSendError(null);
     try {
       await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
         {
           submitter_name: name.trim(),
           submitter_email: email.trim(),
@@ -51,7 +53,7 @@ export function ChatContactForm({ needsSummary, messages = [] }: ChatContactForm
           chat_log: formatChatLog(messages),
           to_email: "dev-software@estiponagroup.com",
         },
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
       );
       setSubmitted(true);
     } catch (err) {

@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+import type { ReactElement } from "react";
+
+export const metadata: Metadata = {
+  title: "Stylesheet",
+};
+
 export default function Stylesheet() {
   return (
     <div style={{minWidth: 2083, background: '#191C25', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', display: 'inline-flex'}}>
@@ -360,7 +367,7 @@ export default function Stylesheet() {
                   <div style={{color: 'rgba(25, 28, 37, 0.35)', fontSize: 12, fontFamily: 'Helvetica Neue', fontWeight: '400', lineHeight: '16px', letterSpacing: 0.12}}>All 8 values — click any to expand description</div>
                   <div style={{paddingTop: 12}}>
                     <div style={{height: 96, position: 'relative', background: '#F7F6F4', outline: '1px rgba(25, 28, 37, 0.08) solid', outlineOffset: '-1px'}}>
-                      {['Fun', 'Collaborative', 'Transparent', 'Creative', 'Client-Centric', 'Caring', 'Innovative', 'Respectful'].reduce<{ el: JSX.Element[], left: number }>(({el, left}, label) => {
+                      {['Fun', 'Collaborative', 'Transparent', 'Creative', 'Client-Centric', 'Caring', 'Innovative', 'Respectful'].reduce<{ el: ReactElement[], left: number }>(({el, left}, label) => {
                         const width = label.length * 7 + 56;
                         el.push(
                           <div key={label} style={{height: 30, paddingLeft: 16, paddingRight: 16, paddingTop: 6, paddingBottom: 6, left, top: 33, position: 'absolute', outline: '1px rgba(25, 28, 37, 0.15) solid', outlineOffset: '-1px', display: 'inline-flex', alignItems: 'center', gap: 6}}>

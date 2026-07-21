@@ -1,8 +1,10 @@
+"use client";
+
 import { useState, useRef, useEffect } from "react";
-import searchIcon from "../assets/search-icon-light.svg";
-import { useSubmitSearch } from "../hooks/useSubmitSearch";
-import { Loading } from "./ui/Loading";
-import { CaseStudyModal, type SearchMatch } from "./layout/CaseStudyModal";
+import searchIcon from "../../assets/search-icon-light.svg";
+import { useSubmitSearch } from "../../hooks/useSubmitSearch";
+import { Loading } from "../ui/Loading";
+import { CaseStudyModal, type SearchMatch } from "../layout/CaseStudyModal";
 
 export default function SearchButton() {
   const [open, setOpen] = useState(false);
@@ -81,7 +83,7 @@ export default function SearchButton() {
           transition: "background 0.2s",
         }}
       >
-        <img src={searchIcon} alt="Search" style={{ height: 30 }} />
+        <img src={searchIcon.src} alt="Search" style={{ height: 30 }} />
       </button>
 
       {/* Results panel */}

@@ -1,9 +1,15 @@
-import FeaturedCaseStudy from '../../components/layout/FeaturedCaseStudy';
-import { useFeaturedCaseStudy } from '../../hooks/useFeaturedCaseStudy';
-import { urlFor } from '../../lib/sanity';
+import FeaturedCaseStudy from './FeaturedCaseStudy';
+import { client, urlFor } from '@/lib/sanity';
+import type { FeaturedCaseStudyData } from '@/lib/sanity.types';
 
-export default function FeaturedCaseStudyConnected() {
-  const data = useFeaturedCaseStudy();
+const QUERY = `*[_type == "featuredCaseStudy"] | order(_updatedAt desc) [0]`;
+
+export default async function FeaturedCaseStudyConnected() {
+  const data = await client.fetch<FeaturedCaseStudyData>(
+    QUERY,
+    {},
+    { next: { revalidate: 60 } },
+  );
 
   if (!data) {
     return <div style={{ width: '100%', minHeight: 1250, background: 'var(--eg-white)' }} />;

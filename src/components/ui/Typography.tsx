@@ -1,3 +1,5 @@
+import type { JSX } from 'react';
+
 type TypographyVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'body' | 'eyebrow';
 
 interface TypographyProps {

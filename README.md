@@ -22,14 +22,15 @@ npm install
 cp .env.example .env
 ```
 
-Fill in `.env`:
+Fill in `.env` (shared across dev/build, both modes load this):
 
 | Var | Purpose |
 |---|---|
-| `VITE_SANITY_PROJECT_ID` | Sanity project ID (see `sanity.config.ts` / `sanity.cli.ts` for the value) |
-| `VITE_SANITY_DATASET` | Sanity dataset, e.g. `production` |
+| `VITE_SANITY_PROJECT_ID` | Sanity project ID (`vsl9pc8r`) |
 
-Without these set, `src/lib/sanity.ts` (the Sanity client used by the frontend) won't resolve content.
+Dataset is set per Vite mode via `.env.development` / `.env.production` (gitignored, same as `.env` — each dev sets these up locally) — see [Sanity environments](#sanity-environments) below for how that works and the one manual step (a read token) needed for local dev.
+
+Without a resolvable project/dataset, `src/lib/sanity.ts` (the Sanity client used by the frontend) won't return content.
 
 ## Frontend — dev / build / preview
 
@@ -46,14 +47,42 @@ The Studio config lives at the repo root (`sanity.config.ts`, `sanity.cli.ts`), 
 
 - **Schema types**: `src/schemaTypes/`. Each content type is its own file (e.g. `featuredCaseStudyType.ts`), and all types are aggregated in `src/schemaTypes/index.ts` via the `schemaTypes` array. To add a new content type, create a file with `defineType`/`defineField`, then add it to that array.
 - **Studio plugins enabled**: `structureTool` (default content editing UI) and `visionTool` (GROQ query playground). Presentation/visual-editing tool (`presentationTool`) is intentionally not wired up — it needs a draft-mode API route on the frontend, which this Vite SPA doesn't have (no server).
+- **Workspaces**: `sanity.config.ts` defines two workspaces, `production` and `development` (see below) — one deployed Studio, switcher in the UI to move between them.
 
 ```bash
 npm run studio:dev     # run Studio locally (Vite dev server for the Studio UI)
 npm run studio:build   # build static Studio into dist (Studio build, separate from frontend build)
-npm run studio:deploy  # deploy Studio to Sanity's hosted studio URL
+npm run studio:deploy  # deploy Studio to Sanity's hosted studio URL (https://estipona.sanity.studio)
 ```
 
-`projectId`/`dataset` for the Studio are hardcoded in `sanity.config.ts` and `sanity.cli.ts` (must match `.env`'s `VITE_SANITY_PROJECT_ID`/`VITE_SANITY_DATASET`).
+## Sanity environments
+
+Single Sanity project (`vsl9pc8r`), two datasets:
+
+| Dataset | ACL | Used by |
+|---|---|---|
+| `production` | public | live site (`vite build` / deployed frontend), Studio's `production` workspace |
+| `development` | private | local frontend dev server (`npm run dev`), Studio's `development` workspace |
+
+**Studio**: both datasets are wired into `sanity.config.ts` as two workspaces (hardcoded `dataset` per workspace — can't be env-driven since both must exist in the same build for the switcher to work). `sanity.cli.ts` still defaults to `production` for bare CLI commands (`sanity dataset export/import` etc. take the dataset as an explicit arg anyway, so this default rarely matters).
+
+**Frontend**: dataset comes from `VITE_SANITY_DATASET`, set per Vite mode:
+- `.env.development` → `development` (used by `npm run dev`)
+- `.env.production` → `production` (used by `npm run build`)
+- `.env` → holds `VITE_SANITY_PROJECT_ID` only, shared across both modes
+
+**Local dev needs one manual setup step**: `development` is a private dataset, so the frontend's Sanity client needs a read token to query it (anonymous requests to a private dataset return `200` with an empty result — looks like "no content" rather than an auth error). To fix:
+1. `manage.sanity.io` → project `vsl9pc8r` → API → Tokens → Add API token → permission **Viewer** (read-only).
+2. Copy the token into `.env.development`:
+   ```
+   VITE_SANITY_DATASET=development
+   VITE_SANITY_TOKEN=<token>
+   ```
+3. Restart `npm run dev` (Vite doesn't hot-reload env file changes).
+
+`src/lib/sanity.ts` picks up `VITE_SANITY_TOKEN` automatically if present (`useCdn` turns off when a token is set, since the CDN endpoint doesn't support token auth). `.env.production` should not have a token — `production` is public and needs none.
+
+**Promoting content from `development` to `production`**: there's no automatic sync. In practice, treat `development` as a schema/layout testing sandbox and make real content edits directly in the `production` workspace. For bulk/one-off promotion options (full dataset overwrite vs. scripted per-document copy), ask in-repo — not documented here since it's a rare, deliberate operation.
 
 ## AI chat integration
 

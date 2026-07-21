@@ -1,5 +1,7 @@
 import heroImage from "../../assets/media/home/hero.png";
 
+const heroImageSrc = heroImage.src;
+
 interface HeroProps {
   title?: string;
   subtitle?: string;
@@ -12,7 +14,7 @@ export default function Hero({
   title = "We use marketing",
   subtitle = "to solve problems.",
   body = "At Estipona Group, we help businesses and organizations address challenges and meet goals. Buying, joining, understanding, watching, asking, celebrating, believing — if you want people to do something, we can help.",
-  imageSrc = heroImage,
+  imageSrc = heroImageSrc,
   imageAlt = "https://placehold.co/981x1136",
 }: HeroProps) {
   return (
@@ -105,6 +107,8 @@ export default function Hero({
 
       {/* Right - content*/}
       <div
+        role="img"
+        aria-label={imageAlt}
         style={{
           width: "50%",
           flexShrink: 0,

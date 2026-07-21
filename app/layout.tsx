@@ -1,0 +1,31 @@
+import type { Metadata } from "next";
+import "./globals.css";
+import Navigation from "@/components/layout/Navigation";
+import { type NavLink } from "@/api/models";
+
+const NAV_LINKS: NavLink[] = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+  { label: "StyleSheet", href: "/stylesheet" },
+];
+
+export const metadata: Metadata = {
+  title: {
+    default: "Estipona Group",
+    template: "%s | Estipona Group",
+  },
+  description: "We use marketing to solve problems.",
+  icons: { icon: "/favicon.svg" },
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <Navigation links={NAV_LINKS} />
+        {children}
+      </body>
+    </html>
+  );
+}

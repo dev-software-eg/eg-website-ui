@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState, Children } from 'react';
 
 type Direction = 'up' | 'down' | 'left' | 'right' | 'none';

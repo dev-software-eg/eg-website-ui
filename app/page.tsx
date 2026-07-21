@@ -1,7 +1,7 @@
-import Button from "../components/ui/Button";
-import Hero from "../components/layout/Hero";
-import WhatWeDo from "../components/layout/WhatWeDo";
-import FeaturedCaseStudyConnected from "../components/layout/FeaturedCaseStudyConnected";
+import Hero from "@/components/layout/Hero";
+import WhatWeDo from "@/components/layout/WhatWeDo";
+import FeaturedCaseStudyConnected from "@/components/layout/FeaturedCaseStudyConnected";
+
 export default function Home() {
   return (
     <div>
@@ -12,10 +12,6 @@ export default function Home() {
       />
       <FeaturedCaseStudyConnected />
       <WhatWeDo />
-      <Button variant="primary">Primary Button</Button>
-      <Button variant="outline">Outline Button</Button>
-      <Button variant="sage">Sage Button</Button>
-      <Button variant="ghost">Ghost Button</Button>
     </div>
   );
 }
