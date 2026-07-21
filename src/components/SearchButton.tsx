@@ -1,20 +1,17 @@
 import { useState, useRef, useEffect } from "react";
 import searchIcon from "../assets/search-icon-light.svg";
 import { useSubmitSearch } from "../hooks/useSubmitSearch";
+import { Loading } from "./Loading";
+import { CaseStudyModal, type SearchMatch } from "./CaseStudyModal";
 
 export default function SearchButton() {
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<SearchMatch | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
-
-  // const handleClickOutside = (event: MouseEvent) => {
-  //   if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
-  //     setOpen(false);
-  //   }
-  // };
 
   const { data, isLoading, submitSearch } = useSubmitSearch();
 
@@ -23,26 +20,15 @@ export default function SearchButton() {
       setOpen(false);
     } else if (event.key === "Enter" && open) {
       submitSearch(inputRef.current?.value || "");
-
-   
     }
   };
 
-  // useEffect(() => {
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
-
   return (
     <div style={{ position: "relative", width: 64, flexShrink: 0 }}>
-     
-      {/* Input — absolutely positioned, expands leftward over nav content */}
       <input
         ref={inputRef}
         type="search"
-        placeholder={isLoading ? "Searching…" : "Search…"}
+        placeholder={"Search..."}
         disabled={isLoading}
         onKeyDown={(e) => handleKeyDown(e)}
         style={{
@@ -67,7 +53,18 @@ export default function SearchButton() {
           cursor: isLoading ? "wait" : "text",
         }}
       />
-     
+
+      {isLoading && open && (
+        <div style={{
+          position: "absolute",
+          right: 84,
+          top: "50%",
+          transform: "translateY(-50%)",
+          pointerEvents: "none",
+        }}>
+          <Loading size="small" />
+        </div>
+      )}
 
       <button
         onClick={() => setOpen((prev) => !prev)}
@@ -86,6 +83,64 @@ export default function SearchButton() {
       >
         <img src={searchIcon} alt="Search" style={{ height: 30 }} />
       </button>
+
+      {/* Results panel */}
+      {open && data?.matches && (
+        <div style={{
+          position: "absolute",
+          top: "100%",
+          right: 0,
+          width: 344,
+          background: "var(--eg-white)",
+          boxShadow: "0 8px 32px var(--eg-blue-black-08)",
+          zIndex: 100,
+        }}>
+          <p style={{
+            margin: 0,
+            padding: "20px 20px 12px",
+            fontSize: 10,
+            fontFamily: "Helvetica Neue",
+            fontWeight: 500,
+            letterSpacing: 1.4,
+            textTransform: "uppercase",
+            color: "var(--eg-red)",
+          }}>
+            Results
+          </p>
+          {data.matches.map((match: SearchMatch, i: number) => (
+            <button
+              key={i}
+              onClick={() => setSelected(match)}
+              style={{
+                display: "block",
+                width: "100%",
+                textAlign: "left",
+                padding: "14px 20px",
+                borderTop: "1px solid var(--eg-blue-black-08)",
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+                transition: "background 0.15s",
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLButtonElement).style.background = "var(--eg-bg-gray)")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLButtonElement).style.background = "transparent")
+              }
+            >
+              <p style={{ margin: "0 0 4px", fontSize: 13, fontFamily: "Helvetica Neue", fontWeight: 500, lineHeight: "18px", color: "var(--eg-blue-black)" }}>
+                {match.title}
+              </p>
+              <p style={{ margin: 0, fontSize: 11, fontFamily: "Helvetica Neue", fontWeight: 400, lineHeight: "16px", color: "var(--eg-blue-black-25)" }}>
+                {match.reason}
+              </p>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {selected && <CaseStudyModal match={selected} onClose={() => setSelected(null)} />}
     </div>
   );
 }

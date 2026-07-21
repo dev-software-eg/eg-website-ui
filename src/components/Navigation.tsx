@@ -4,6 +4,7 @@ import { type NavLink } from "../api/models";
 import egLogo from "../assets/eg-logo.svg";
 import searchIcon from "../assets/search-icon-light.svg";
 import SearchButton from "./SearchButton";
+import ConversationButton from "./ChatButton";
 
 interface NavigationProps {
   links?: NavLink[];
@@ -71,7 +72,7 @@ export default function Navigation({ links = DEFAULT_LINKS }: NavigationProps) {
           );
         })}
       </div>
-
+      <ConversationButton />
       <SearchButton />
     </nav>
   );
