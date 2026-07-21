@@ -135,3 +135,19 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+@keyframes eg-sparkle {
+  0%, 100% { fill: #191C25; }
+  33%       { fill: #BC2814; }
+  66%       { fill: #9DBEB7; }
+}
+
+.eg-chat-btn:hover .eg-sparkle-lg {
+  animation: eg-sparkle 1.4s ease-in-out infinite;
+}
+.eg-chat-btn:hover .eg-sparkle-sm {
+  animation: eg-sparkle 1.4s ease-in-out infinite 0.25s;
+}
+.eg-chat-btn:hover .eg-sparkle-xs {
+  animation: eg-sparkle 1.4s ease-in-out infinite 0.5s;
+}
