@@ -1,4 +1,4 @@
-import heroImage from "../assets/media/home/hero.png";
+import heroImage from "../../assets/media/home/hero.png";
 
 interface HeroProps {
   title?: string;

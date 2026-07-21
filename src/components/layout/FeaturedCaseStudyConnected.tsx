@@ -1,6 +1,6 @@
-import FeaturedCaseStudy from './FeaturedCaseStudy';
-import { useFeaturedCaseStudy } from '../hooks/useFeaturedCaseStudy';
-import { urlFor } from '../lib/sanity';
+import FeaturedCaseStudy from '../../components/layout/FeaturedCaseStudy';
+import { useFeaturedCaseStudy } from '../../hooks/useFeaturedCaseStudy';
+import { urlFor } from '../../lib/sanity';
 
 export default function FeaturedCaseStudyConnected() {
   const data = useFeaturedCaseStudy();

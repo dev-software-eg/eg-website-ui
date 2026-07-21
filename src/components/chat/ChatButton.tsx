@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
-import { useChat } from "../hooks/useChat";
-import { Loading } from "./Loading";
-import { CaseStudyModal, type SearchMatch } from "./CaseStudyModal";
-import { ChatContactForm } from "./ChatContactForm";
+import { useChat } from "../../hooks/useChat";
+import { Loading } from "../ui/Loading";
+import { CaseStudyModal, type SearchMatch } from "../layout/CaseStudyModal";
+import { ChatContactForm } from "../chat/ChatContactForm";
 const ChatIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clipPath="url(#eg-chat-clip)">

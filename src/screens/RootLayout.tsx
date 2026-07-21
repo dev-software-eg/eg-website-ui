@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import Navigation from '../components/Navigation';
+import Navigation from '../components/layout/Navigation';
 import { type NavLink } from '../api/models';
 
 const NAV_LINKS: NavLink[] = [

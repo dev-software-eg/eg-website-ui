@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import searchIcon from "../assets/search-icon-light.svg";
 import { useSubmitSearch } from "../hooks/useSubmitSearch";
-import { Loading } from "./Loading";
-import { CaseStudyModal, type SearchMatch } from "./CaseStudyModal";
+import { Loading } from "./ui/Loading";
+import { CaseStudyModal, type SearchMatch } from "./layout/CaseStudyModal";
 
 export default function SearchButton() {
   const [open, setOpen] = useState(false);

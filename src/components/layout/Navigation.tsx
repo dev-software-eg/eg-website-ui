@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { type NavLink } from "../api/models";
-import egLogo from "../assets/eg-logo.svg";
-import searchIcon from "../assets/search-icon-light.svg";
-import SearchButton from "./SearchButton";
-import ConversationButton from "./ChatButton";
+import { type NavLink } from "../../api/models";
+import egLogo from "../../assets/eg-logo.svg";
+import ConversationButton from "../chat/ChatButton";
 
 interface NavigationProps {
   links?: NavLink[];

@@ -1,7 +1,7 @@
-import Button from "../components/Button";
-import Hero from "../components/Hero";
+import Button from "../components/ui/Button";
+import Hero from "../components/layout/Hero";
 import WhatWeDo from "../components/WhatWeDo";
-import FeaturedCaseStudyConnected from "../components/FeaturedCaseStudyConnected";
+import FeaturedCaseStudyConnected from "../components/layout/FeaturedCaseStudyConnected";
 export default function Home() {
   return (
     <div>

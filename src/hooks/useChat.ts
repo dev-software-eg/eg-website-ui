@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from "react";
-import type { SearchMatch } from "../components/CaseStudyModal";
+import type { SearchMatch } from "../components/layout/CaseStudyModal";
 
 export interface ChatMessage {
   role: "user" | "assistant";
