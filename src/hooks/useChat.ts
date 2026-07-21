@@ -12,7 +12,6 @@ export function useChat() {
   const [error, setError] = useState<string | null>(null);
   // Index in messages array after which the contact form should appear; null = not shown
   const [contactFormAfterIndex, setContactFormAfterIndex] = useState<number | null>(null);
-  const contactFormSetRef = useRef(false);
   const [needsSummary, setNeedsSummary] = useState<string | null>(null);
   const [caseStudiesAfterIndex, setCaseStudiesAfterIndex] = useState<number | null>(null);
   const [caseStudies, setCaseStudies] = useState<SearchMatch[]>([]);
@@ -39,9 +38,7 @@ export function useChat() {
         ];
         setMessages(updatedMessages);
 
-        // Only pin the form once — ignore subsequent responses with showContactForm: true
-        if (data.showContactForm && !contactFormSetRef.current) {
-          contactFormSetRef.current = true;
+        if (data.showContactForm) {
           setContactFormAfterIndex(updatedMessages.length - 1);
           if (data.needsSummary) setNeedsSummary(data.needsSummary);
         }
@@ -64,7 +61,6 @@ export function useChat() {
     setMessages([]);
     setError(null);
     setContactFormAfterIndex(null);
-    contactFormSetRef.current = false;
     setNeedsSummary(null);
     setCaseStudiesAfterIndex(null);
     setCaseStudies([]);

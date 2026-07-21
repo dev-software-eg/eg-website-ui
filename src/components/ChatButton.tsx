@@ -4,20 +4,8 @@ import remarkBreaks from "remark-breaks";
 import { useChat } from "../hooks/useChat";
 import { Loading } from "./Loading";
 import { CaseStudyModal, type SearchMatch } from "./CaseStudyModal";
+import { ChatContactForm } from "./ChatContactForm";
 import aiIcon from "../assets/ai-icon.svg";
-
-const contactInputStyle: React.CSSProperties = {
-  padding: "10px 12px",
-  border: "1px solid var(--eg-blue-black-08)",
-  outline: "none",
-  fontSize: 13,
-  fontFamily: "Helvetica Neue",
-  fontWeight: 400,
-  color: "var(--eg-blue-black)",
-  background: "var(--eg-white)",
-  width: "100%",
-  boxSizing: "border-box",
-};
 
 const ChatIcon = () => <img src={aiIcon} alt="AI Icon" />;
 
@@ -38,9 +26,6 @@ export default function ChatButton() {
     sendMessage,
     reset,
   } = useChat();
-  const [contactName, setContactName] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-  const [contactSubmitted, setContactSubmitted] = useState(false);
   const [selected, setSelected] = useState<SearchMatch | null>(null);
 
   useEffect(() => {
@@ -50,7 +35,7 @@ export default function ChatButton() {
   useEffect(() => {
     const el = messagesContainerRef.current;
     if (el) el.scrollTop = el.scrollHeight;
-  }, [messages, isLoading]);
+  }, [messages, isLoading, contactFormAfterIndex, caseStudiesAfterIndex]);
 
   const handleSend = () => {
     const trimmed = input.trim();
@@ -235,37 +220,7 @@ export default function ChatButton() {
 
                 {/* Contact form appears inline at the position it was triggered */}
                 {i === contactFormAfterIndex && (
-                  <div style={{ background: "var(--eg-bg-gray)", padding: "16px", display: "flex", flexDirection: "column", gap: 10 }}>
-                    <p style={{ margin: 0, fontSize: 10, fontFamily: "Helvetica Neue", fontWeight: 500, letterSpacing: 1.4, textTransform: "uppercase", color: "var(--eg-red)" }}>
-                      Get in Touch
-                    </p>
-                    {contactSubmitted ? (
-                      <p style={{ margin: 0, fontSize: 13, fontFamily: "Helvetica Neue", color: "var(--eg-blue-black)" }}>
-                        Thanks! We'll be in touch soon.
-                      </p>
-                    ) : (
-                      <>
-                        <input type="text" placeholder="Your name" value={contactName} onChange={(e) => setContactName(e.target.value)} style={contactInputStyle} />
-                        <input type="email" placeholder="Your email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} style={contactInputStyle} />
-                        <textarea placeholder="Your message" value={needsSummary ?? ""} rows={5} readOnly style={contactInputStyle} />
-                        <button
-                          onClick={() => {
-                            if (contactName.trim() && contactEmail.trim()) {
-                              fetch("http://localhost:3000/api/contact", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ name: contactName.trim(), email: contactEmail.trim(), description: needsSummary ?? undefined }),
-                              }).catch(() => {});
-                              setContactSubmitted(true);
-                            }
-                          }}
-                          style={{ padding: "10px 16px", background: "var(--eg-blue-black)", color: "var(--eg-white)", border: "none", cursor: "pointer", fontSize: 11, fontFamily: "Helvetica Neue", fontWeight: 500, letterSpacing: 1.2, textTransform: "uppercase" }}
-                        >
-                          Submit
-                        </button>
-                      </>
-                    )}
-                  </div>
+                  <ChatContactForm needsSummary={needsSummary} />
                 )}
 
                 {/* Case studies pinned inline at the position they were triggered */}
