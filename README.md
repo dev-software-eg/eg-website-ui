@@ -28,6 +28,7 @@ Fill in `.env.local`:
 | `SANITY_DATASET` | `development` locally, `production` in prod (see [Sanity environments](#sanity-environments)) |
 | `SANITY_TOKEN` | Read token, only needed against the private `development` dataset |
 | `AI_SEARCH_API_URL` | Base URL of the separate `ai-search-api` backend (see [AI chat integration](#ai-chat-integration)) — **don't use `:3000`**, Next's own dev server claims that port |
+| `AI_SEARCH_API_BYPASS_SECRET` | Only needed if AI_SEARCH_API_URL points at a Vercel deployment with Deployment Protection enabled (e.g. a preview branch) |
 | `NEXT_PUBLIC_EMAILJS_SERVICE_ID` / `_TEMPLATE_ID` / `_PUBLIC_KEY` | EmailJS credentials for the chat contact form |
 
 These are all read server-side via `process.env` (Sanity vars, `AI_SEARCH_API_URL`) except the `NEXT_PUBLIC_*` EmailJS vars, which ship to the browser since EmailJS sends directly from the client.
