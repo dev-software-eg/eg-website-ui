@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type NavLink } from "../../api/models";
-import egLogo from "../../assets/eg-logo.svg";
+import egLogo from "../../assets/eg-logo-red.svg";
 import ConversationButton from "../chat/ChatButton";
 
 interface NavigationProps {
@@ -13,7 +13,7 @@ interface NavigationProps {
 
 const DEFAULT_LINKS: NavLink[] = [
   { label: "Work", href: "/work" },
-  { label: "What We Do", href: "/services" },
+  { label: "What We Do", href: "/what-we-do" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
