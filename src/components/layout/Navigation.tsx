@@ -42,7 +42,7 @@ export default function Navigation({ links = DEFAULT_LINKS }: NavigationProps) {
         <img src={egLogo.src} alt="EG Studio Logo" className="h-10" />
       </Link>
 
-      <div className="flex items-center">
+      <div className="flex items-stretch">
         <div className="hidden lg:flex items-center gap-8">
           {links.map(({ label, href }) => {
             const isActive = pathname === href;
