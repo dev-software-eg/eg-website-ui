@@ -104,11 +104,8 @@ export default function WhatWeDo({
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      className="relative flex flex-col lg:flex-row min-h-fit lg:min-h-155 overflow-hidden"
       style={{
-        position: "relative",
-        display: "flex",
-        minHeight: 620,
-        overflow: "hidden",
         background: `
           radial-gradient(ellipse at 0% 100%, rgba(188, 40, 20, 0.55) 0%, transparent 50%),
           radial-gradient(ellipse at 100% 60%, rgba(109, 154, 146, 0.50) 0%, transparent 55%),
@@ -116,130 +113,63 @@ export default function WhatWeDo({
         `,
       }}
     >
-      {/* Sage glow — tracks cursor directly via ref */}
+      {/* Sage glow — cursor-tracked, desktop-only (no cursor on touch) */}
       <div
         ref={sageRef}
         aria-hidden
+        className="hidden lg:block absolute top-0 left-0 w-225 h-225 rounded-full pointer-events-none will-change-transform"
         style={{
-          position: "absolute",
-          width: 900,
-          height: 900,
-          borderRadius: "50%",
           background:
             "radial-gradient(ellipse at center, rgba(157,190,183,0.18) 0%, transparent 65%)",
           transform: "translate(-450px, -450px)",
           opacity: 0,
           transition: "opacity 0.4s ease",
-          pointerEvents: "none",
-          willChange: "transform",
-          top: 0,
-          left: 0,
         }}
       />
-      {/* Red glow — slight CSS lag for depth */}
+      {/* Red glow — slight CSS lag for depth, desktop-only */}
       <div
         ref={redRef}
         aria-hidden
+        className="hidden lg:block absolute top-0 left-0 w-150 h-150 rounded-full pointer-events-none will-change-transform"
         style={{
-          position: "absolute",
-          width: 600,
-          height: 600,
-          borderRadius: "50%",
           background:
             "radial-gradient(ellipse at center, rgba(188,40,20,0.12) 0%, transparent 65%)",
           transform: "translate(-300px, -300px)",
           opacity: 0,
           transition:
             "transform 0.25s cubic-bezier(0.2, 0, 0.2, 1), opacity 0.4s ease",
-          pointerEvents: "none",
-          willChange: "transform",
-          top: 0,
-          left: 0,
         }}
       />
       {/* Left panel — overflow visible so subheading can bleed into right panel */}
-      <div
-        style={{
-          width: "45%",
-          flexShrink: 0,
-          display: "flex",
-          flexDirection: "column",
-          padding: "72px 80px 72px 96px",
-          overflow: "visible",
-        }}
-      >
-        {/* Heading block — aligned with category list, subheading bleeds right */}
-        <div style={{ marginBottom: 48, overflow: "visible", width: "60%", alignSelf: "flex-end" }}>
-          <h2
-            style={{
-              margin: "0 0 16px",
-              color: "var(--eg-white)",
-              fontSize: 36,
-              fontFamily: "Helvetica Neue, sans-serif",
-              fontWeight: 400,
-              lineHeight: "40px",
-            }}
-          >
+      <div className="w-full lg:w-[45%] shrink-0 flex flex-col p-8 sm:p-12 lg:pt-18 lg:pr-20 lg:pb-18 lg:pl-24 overflow-visible">
+        {/* Heading block — aligned with category list, subheading bleeds right at lg+ */}
+        <div className="mb-12 overflow-visible w-full lg:w-3/5 lg:self-end">
+          <h2 className="mb-4 text-eg-white text-4xl font-helvetica font-normal leading-10">
             {heading}
           </h2>
-          <p
-            style={{
-              margin: 0,
-              width: "110%",
-              color: "rgba(255,255,255,0.50)",
-              fontSize: 24,
-              fontFamily: "Helvetica Neue, sans-serif",
-              fontWeight: 300,
-              lineHeight: "30px",
-              letterSpacing: 0.14,
-            }}
-          >
+          <p className="m-0 w-full lg:w-[110%] text-white/50 text-2xl font-helvetica font-light leading-7.5 tracking-[0.14px]">
             {subheading}
           </p>
         </div>
 
-        {/* Category list — unchanged: right-aligned 60% of left panel */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            width: "60%",
-            alignSelf: "flex-end",
-          }}
-        >
+        {/* Category list — right-aligned 60% of left panel at lg+ */}
+        <div className="flex flex-col w-full lg:w-3/5 lg:self-end">
           {categories.map((cat, i) => {
             const isActive = cat.id === activeId;
             return (
               <div key={cat.id}>
                 <button
                   onClick={() => setActiveId(cat.id)}
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    textAlign: "left",
-                    background: "none",
-                    border: "none",
-                    borderRight: isActive
-                      ? "1px solid var(--eg-white)"
-                      : "1px solid rgba(255,255,255,0.08)",
-                    cursor: "pointer",
-                    padding: "18px 0",
-                    color: isActive
-                      ? "var(--eg-white)"
-                      : "rgba(255,255,255,0.35)",
-                    fontSize: 22,
-                    fontFamily: "Helvetica Neue, sans-serif",
-                    fontWeight: isActive ? 400 : 300,
-                    lineHeight: "28px",
-                    transition: "color 0.2s",
-                  }}
+                  className={`block w-full text-left bg-transparent border-none border-r cursor-pointer py-4.5 text-[22px] font-helvetica leading-7 transition-colors ${
+                    isActive
+                      ? "border-eg-white text-eg-white font-normal"
+                      : "border-white/8 text-white/35 font-light"
+                  }`}
                 >
                   {cat.label}
                 </button>
                 {i < categories.length && (
-                  <div
-                    style={{ height: 1, background: "rgba(255,255,255,0.08)" }}
-                  />
+                  <div className="h-px bg-white/8" />
                 )}
               </div>
             );
@@ -248,104 +178,30 @@ export default function WhatWeDo({
       </div>
 
       {/* Right panel */}
-      <div
-        style={{
-          flex: 1,
-          padding: "72px 96px 72px 80px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
+      <div className="flex-1 p-8 sm:p-12 lg:pt-18 lg:pr-24 lg:pb-18 lg:pl-20 flex flex-col justify-center relative overflow-hidden">
         {/* Watermark */}
         <div
           aria-hidden
-          style={{
-            position: "absolute",
-            top: "55%",
-            left: "30%",
-            transform: "translate(-50%, -50%)",
-            color: "rgba(255,255,255,0.04)",
-            fontSize: 140,
-            fontFamily: "Helvetica Neue, sans-serif",
-            fontWeight: 700,
-            whiteSpace: "nowrap",
-            pointerEvents: "none",
-            userSelect: "none",
-            letterSpacing: -4,
-          }}
+          className="hidden lg:block absolute top-[55%] left-[30%] -translate-x-1/2 -translate-y-1/2 text-white/4 text-[140px] font-helvetica font-bold whitespace-nowrap pointer-events-none select-none tracking-[-4px]"
         >
           {active.subheading}
         </div>
 
         {/* Detail content */}
-        <div key={activeId} style={{ position: "relative", marginTop: 220 }}>
-          <h3
-            style={{
-              margin: "0 0 16px",
-              color: "var(--eg-white)",
-              fontSize: 42,
-              fontFamily: "Helvetica Neue, sans-serif",
-              fontWeight: 300,
-              lineHeight: "48px",
-            }}
-          >
+        <div key={activeId} className="relative mt-12 lg:mt-55">
+          <h3 className="mb-4 text-eg-white text-[42px] font-helvetica font-light leading-12">
             {active.label}
           </h3>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-              gap: 24,
-            }}
-          >
-            <p
-              style={{
-                margin: 0,
-                color: "rgba(255,255,255,0.70)",
-                fontSize: 14,
-                fontFamily: "Helvetica Neue, sans-serif",
-                fontWeight: 400,
-                lineHeight: "22px",
-                letterSpacing: 0.14,
-                maxWidth: 280,
-              }}
-            >
+          <div className="flex items-end justify-between gap-6">
+            <p className="m-0 text-white/70 text-sm font-helvetica font-normal leading-5.5 tracking-[0.14px] max-w-70">
               {active.description}
             </p>
 
             {active.href && (
               <a
                 href={active.href}
-                style={{
-                  flexShrink: 0,
-                  width: 40,
-                  height: 40,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: "1px rgba(255,255,255,0.25) solid",
-                  color: "var(--eg-white)",
-                  fontSize: 18,
-                  textDecoration: "none",
-                  transition: "border-color 0.2s, background 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.background =
-                    "rgba(255,255,255,0.10)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                    "rgba(255,255,255,0.60)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.background =
-                    "transparent";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                    "rgba(255,255,255,0.25)";
-                }}
+                className="shrink-0 w-10 h-10 flex items-center justify-center border border-white/25 text-eg-white text-lg no-underline transition-colors hover:bg-white/10 hover:border-white/60"
               >
                 ↗
               </a>

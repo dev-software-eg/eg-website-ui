@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type NavLink } from "../../api/models";
@@ -18,63 +18,80 @@ const DEFAULT_LINKS: NavLink[] = [
   { label: "Contact", href: "/contact" },
 ];
 
+const MenuIcon = ({ open }: { open: boolean }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {open ? (
+      <path d="M6 6L18 18M18 6L6 18" stroke="#191C25" strokeWidth="1.5" strokeLinecap="round" />
+    ) : (
+      <path d="M4 7H20M4 12H20M4 17H20" stroke="#191C25" strokeWidth="1.5" strokeLinecap="round" />
+    )}
+  </svg>
+);
+
 export default function Navigation({ links = DEFAULT_LINKS }: NavigationProps) {
   const pathname = usePathname();
-  const [hoveredHref, setHoveredHref] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   return (
-    <nav
-      style={{
-        height: 64,
-        paddingLeft: 32,
-        background: "var(--eg-white)",
-        // boxShadow: "0px 1px 0px var(--eg-blue-black-06)",
-        // outline: "1px var(--eg-blue-black-08) solid",
-        outlineOffset: "-1px",
-        display: "flex",
-        alignItems: "stretch",
-        justifyContent: "space-between",
-      }}
-    >
-      <Link href="/" style={{ display: "flex", alignItems: "center" }}>
-        <img src={egLogo.src} alt="EG Studio Logo" style={{ height: 40 }} />
+    <nav className="relative h-16 pl-4 sm:pl-8 bg-eg-white flex items-stretch justify-between">
+      <Link href="/" className="flex items-center">
+        <img src={egLogo.src} alt="EG Studio Logo" className="h-10" />
       </Link>
 
-      <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
-        {links.map(({ label, href }) => {
-          const isActive = pathname === href;
-          const isHovered = href === hoveredHref;
-          const color = isActive
-            ? "var(--eg-red)"
-            : isHovered
-              ? "var(--eg-blue-black)"
-              : "var(--eg-blue-black-55)";
+      <div className="flex items-center">
+        <div className="hidden lg:flex items-center gap-8">
+          {links.map(({ label, href }) => {
+            const isActive = pathname === href;
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`font-helvetica text-xs font-normal leading-4 tracking-[1.2px] no-underline transition-colors ${
+                  isActive ? "text-eg-red" : "text-eg-blue-black-55 hover:text-eg-blue-black"
+                }`}
+              >
+                {label}
+              </Link>
+            );
+          })}
+        </div>
 
-          return (
-            <Link
-              key={href}
-              href={href}
-              style={{
-                color,
-                fontSize: 12,
-                fontFamily: "Helvetica Neue",
-                fontWeight: 400,
-                // textTransform: "uppercase",
-                lineHeight: "16px",
-                letterSpacing: 1.2,
-                textDecoration: "none",
-                transition: "color 0.2s",
-              }}
-              onMouseEnter={() => setHoveredHref(href)}
-              onMouseLeave={() => setHoveredHref(null)}
-            >
-              {label}
-            </Link>
-          );
-        })}
+        <button
+          type="button"
+          className="flex lg:hidden items-center justify-center px-4 h-full"
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
+          onClick={() => setMobileOpen((v) => !v)}
+        >
+          <MenuIcon open={mobileOpen} />
+        </button>
+
+        <ConversationButton />
       </div>
-      <ConversationButton />
-      {/* <SearchButton /> */}
+
+      {mobileOpen && (
+        <div className="absolute top-full inset-x-0 z-50 flex flex-col gap-4 p-6 bg-eg-white shadow-lg lg:hidden">
+          {links.map(({ label, href }) => {
+            const isActive = pathname === href;
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`font-helvetica text-sm font-normal tracking-[1.2px] no-underline ${
+                  isActive ? "text-eg-red" : "text-eg-blue-black-55"
+                }`}
+                onClick={() => setMobileOpen(false)}
+              >
+                {label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </nav>
   );
 }

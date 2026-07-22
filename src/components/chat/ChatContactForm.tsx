@@ -9,18 +9,8 @@ interface ChatContactFormProps {
   messages?: ChatMessage[];
 }
 
-const inputStyle: React.CSSProperties = {
-  padding: "10px 12px",
-  border: "1px solid var(--eg-blue-black-08)",
-  outline: "none",
-  fontSize: 13,
-  fontFamily: "Helvetica Neue",
-  fontWeight: 400,
-  color: "var(--eg-blue-black)",
-  background: "var(--eg-white)",
-  width: "100%",
-  boxSizing: "border-box",
-};
+const inputClass =
+  "px-3 py-2.5 border border-eg-blue-black-08 outline-none text-[13px] font-helvetica font-normal text-eg-blue-black bg-eg-white w-full box-border";
 
 function formatChatLog(messages: ChatMessage[]): string {
   return messages
@@ -64,29 +54,31 @@ export function ChatContactForm({ needsSummary, messages = [] }: ChatContactForm
   };
 
   return (
-    <div style={{ background: "var(--eg-bg-gray)", padding: "16px", display: "flex", flexDirection: "column", gap: 10 }}>
-      <p style={{ margin: 0, fontSize: 10, fontFamily: "Helvetica Neue", fontWeight: 500, letterSpacing: 1.4, textTransform: "uppercase", color: "var(--eg-red)" }}>
+    <div className="bg-eg-bg-gray p-4 flex flex-col gap-2.5">
+      <p className="m-0 text-[10px] font-helvetica font-medium tracking-[1.4px] uppercase text-eg-red">
         Get in Touch
       </p>
       {submitted ? (
-        <p style={{ margin: 0, fontSize: 13, fontFamily: "Helvetica Neue", color: "var(--eg-blue-black)" }}>
+        <p className="m-0 text-[13px] font-helvetica text-eg-blue-black">
           Thanks! We'll be in touch soon.
         </p>
       ) : (
         <>
-          <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
-          <input type="email" placeholder="Your email" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
-          <input type="tel" placeholder="Your phone number" value={phone} onChange={(e) => setPhone(e.target.value)} style={inputStyle} />
-          <textarea placeholder="Your message" value={message} rows={5} onChange={(e) => setMessage(e.target.value)} style={inputStyle} />
+          <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} className={inputClass} />
+          <input type="email" placeholder="Your email" value={email} onChange={(e) => setEmail(e.target.value)} className={inputClass} />
+          <input type="tel" placeholder="Your phone number" value={phone} onChange={(e) => setPhone(e.target.value)} className={inputClass} />
+          <textarea placeholder="Your message" value={message} rows={5} onChange={(e) => setMessage(e.target.value)} className={inputClass} />
           <button
             onClick={handleSubmit}
             disabled={sending}
-            style={{ padding: "10px 16px", background: sending ? "var(--eg-blue-black-25)" : "var(--eg-blue-black)", color: "var(--eg-white)", border: "none", cursor: sending ? "wait" : "pointer", fontSize: 11, fontFamily: "Helvetica Neue", fontWeight: 500, letterSpacing: 1.2, textTransform: "uppercase" }}
+            className={`px-4 py-2.5 text-eg-white border-none text-[11px] font-helvetica font-medium tracking-[1.2px] uppercase ${
+              sending ? "bg-eg-blue-black-25 cursor-wait" : "bg-eg-blue-black cursor-pointer"
+            }`}
           >
             {sending ? "Sending…" : "Submit"}
           </button>
           {sendError && (
-            <p style={{ margin: 0, fontSize: 12, fontFamily: "Helvetica Neue", color: "var(--eg-red)" }}>
+            <p className="m-0 text-xs font-helvetica text-eg-red">
               {sendError}
             </p>
           )}

@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from 'react';
-
 type NavLinkState = 'rest' | 'hover' | 'active';
 
 interface NavLinkProps {
@@ -10,29 +6,11 @@ interface NavLinkProps {
 }
 
 export function NavLink({ children, active = false }: NavLinkProps) {
-  const [hovered, setHovered] = useState(false);
-
-  const color = active
-    ? 'var(--eg-red)'
-    : hovered
-    ? 'var(--eg-blue-black)'
-    : 'var(--eg-blue-black-55)';
-
   return (
     <span
-      style={{
-        color,
-        fontSize: 12,
-        fontFamily: 'Helvetica Neue',
-        fontWeight: 400,
-        textTransform: 'uppercase',
-        lineHeight: '16px',
-        letterSpacing: 1.20,
-        cursor: 'pointer',
-        transition: 'color 0.2s',
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className={`text-xs font-helvetica font-normal uppercase leading-4 tracking-[1.2px] cursor-pointer transition-colors ${
+        active ? 'text-eg-red' : 'text-eg-blue-black-55 hover:text-eg-blue-black'
+      }`}
     >
       {children}
     </span>
@@ -44,43 +22,18 @@ interface HoverButtonProps {
   label: string;
 }
 
+const variantClasses: Record<HoverButtonProps['variant'], string> = {
+  primary: 'bg-eg-red outline-solid outline-1 outline-eg-red text-eg-white hover:bg-eg-red-dark hover:outline-eg-red-dark',
+  outline: 'outline-solid outline-1 outline-eg-blue-black-15 text-eg-blue-black hover:outline-eg-sage-dark',
+  sage: 'bg-eg-sage text-eg-blue-black hover:bg-eg-sage-light',
+};
+
 export function HoverButton({ variant, label }: HoverButtonProps) {
-  const [hovered, setHovered] = useState(false);
-
-  const variantStyles: Record<string, { rest: React.CSSProperties; hover: React.CSSProperties }> = {
-    primary: {
-      rest:  { background: 'var(--eg-red)',      outline: '1px var(--eg-red) solid',      color: 'var(--eg-white)' },
-      hover: { background: 'var(--eg-red-dark)', outline: '1px var(--eg-red-dark) solid', color: 'var(--eg-white)' },
-    },
-    outline: {
-      rest:  { outline: '1px var(--eg-blue-black-15) solid', color: 'var(--eg-blue-black)' },
-      hover: { outline: '1px var(--eg-sage-dark) solid',     color: 'var(--eg-blue-black)' },
-    },
-    sage: {
-      rest:  { background: 'var(--eg-sage)',       color: 'var(--eg-blue-black)' },
-      hover: { background: 'var(--eg-sage-light)', color: 'var(--eg-blue-black)' },
-    },
-  };
-
-  const base = variantStyles[variant][hovered ? 'hover' : 'rest'];
-
   return (
     <div
-      style={{
-        height: 34,
-        paddingLeft: 16,
-        paddingRight: 16,
-        outlineOffset: '-1px',
-        display: 'inline-flex',
-        alignItems: 'center',
-        cursor: 'pointer',
-        transition: 'background 0.2s, outline-color 0.2s',
-        ...base,
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className={`h-8.5 px-4 -outline-offset-1 inline-flex items-center cursor-pointer transition-[background,outline-color] duration-200 ${variantClasses[variant]}`}
     >
-      <span style={{ fontSize: 12, fontFamily: 'Helvetica Neue', fontWeight: 500, textTransform: 'uppercase', lineHeight: '16px', letterSpacing: 1.20, color: 'inherit' }}>
+      <span className="text-xs font-helvetica font-medium uppercase leading-4 tracking-[1.2px] text-inherit">
         {label}
       </span>
     </div>

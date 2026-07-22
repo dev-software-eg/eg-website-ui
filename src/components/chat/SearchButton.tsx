@@ -26,115 +26,51 @@ export default function SearchButton() {
   };
 
   return (
-    <div style={{ position: "relative", width: 64, flexShrink: 0 }}>
+    <div className="relative w-16 shrink-0">
       <input
         ref={inputRef}
         type="search"
         placeholder={"Search..."}
         disabled={isLoading}
         onKeyDown={(e) => handleKeyDown(e)}
-        style={{
-          position: "absolute",
-          top: 0,
-          bottom: 0,
-          right: 64,
-          width: open ? 280 : 0,
-          padding: open ? "0 20px" : 0,
-          border: "none",
-          borderLeft: open ? "1px var(--eg-blue-black-08) solid" : "none",
-          outline: "none",
-          background: isLoading ? "var(--eg-bg-gray)" : "var(--eg-white)",
-          color: isLoading ? "var(--eg-blue-black-25)" : "var(--eg-blue-black)",
-          fontSize: 12,
-          fontFamily: "Helvetica Neue",
-          fontWeight: 400,
-          letterSpacing: 1.2,
-          overflow: "hidden",
-          transition: "width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s",
-          boxShadow: open ? "-4px 0 12px var(--eg-blue-black-06)" : "none",
-          cursor: isLoading ? "wait" : "text",
-        }}
+        className={`absolute inset-y-0 right-16 border-none outline-none font-helvetica text-xs tracking-[1.2px] overflow-hidden transition-[width,padding,background,box-shadow] duration-300 ease-in-out ${
+          open
+            ? "w-[min(280px,calc(100vw-96px))] max-w-70 px-5 border-l border-eg-blue-black-08 shadow-[-4px_0_12px_var(--eg-blue-black-06)]"
+            : "w-0 px-0 border-l-0 shadow-none"
+        } ${isLoading ? "bg-eg-bg-gray text-eg-blue-black-25 cursor-wait" : "bg-eg-white text-eg-blue-black cursor-text"}`}
       />
 
       {isLoading && open && (
-        <div style={{
-          position: "absolute",
-          right: 84,
-          top: "50%",
-          transform: "translateY(-50%)",
-          pointerEvents: "none",
-        }}>
+        <div className="absolute right-21 top-1/2 -translate-y-1/2 pointer-events-none">
           <Loading size="small" />
         </div>
       )}
 
       <button
         onClick={() => setOpen((prev) => !prev)}
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: open ? "var(--eg-sage-dark)" : "var(--eg-sage)",
-          border: "none",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: 0,
-          transition: "background 0.2s",
-        }}
+        className={`absolute inset-0 border-none cursor-pointer flex items-center justify-center p-0 transition-colors ${
+          open ? "bg-eg-sage-dark" : "bg-eg-sage"
+        }`}
       >
-        <img src={searchIcon.src} alt="Search" style={{ height: 30 }} />
+        <img src={searchIcon.src} alt="Search" className="h-7.5" />
       </button>
 
       {/* Results panel */}
       {open && data?.matches && (
-        <div style={{
-          position: "absolute",
-          top: "100%",
-          right: 0,
-          width: 344,
-          background: "var(--eg-white)",
-          boxShadow: "0 8px 32px var(--eg-blue-black-08)",
-          zIndex: 100,
-        }}>
-          <p style={{
-            margin: 0,
-            padding: "20px 20px 12px",
-            fontSize: 10,
-            fontFamily: "Helvetica Neue",
-            fontWeight: 500,
-            letterSpacing: 1.4,
-            textTransform: "uppercase",
-            color: "var(--eg-red)",
-          }}>
+        <div className="absolute top-full right-0 w-86 max-w-[calc(100vw-32px)] bg-eg-white shadow-[0_8px_32px_var(--eg-blue-black-08)] z-100">
+          <p className="m-0 pt-5 px-5 pb-3 text-[10px] font-helvetica font-medium tracking-[1.4px] uppercase text-eg-red">
             Results
           </p>
           {data.matches.map((match: SearchMatch, i: number) => (
             <button
               key={i}
               onClick={() => setSelected(match)}
-              style={{
-                display: "block",
-                width: "100%",
-                textAlign: "left",
-                padding: "14px 20px",
-                borderTop: "1px solid var(--eg-blue-black-08)",
-                border: "none",
-                background: "transparent",
-                cursor: "pointer",
-                transition: "background 0.15s",
-              }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLButtonElement).style.background = "var(--eg-bg-gray)")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLButtonElement).style.background = "transparent")
-              }
+              className="block w-full text-left py-3.5 px-5 border-none border-t border-eg-blue-black-08 bg-transparent cursor-pointer transition-colors hover:bg-eg-bg-gray"
             >
-              <p style={{ margin: "0 0 4px", fontSize: 13, fontFamily: "Helvetica Neue", fontWeight: 500, lineHeight: "18px", color: "var(--eg-blue-black)" }}>
+              <p className="mb-1 text-[13px] font-helvetica font-medium leading-4.5 text-eg-blue-black">
                 {match.title}
               </p>
-              <p style={{ margin: 0, fontSize: 11, fontFamily: "Helvetica Neue", fontWeight: 400, lineHeight: "16px", color: "var(--eg-blue-black-25)" }}>
+              <p className="m-0 text-[11px] font-helvetica font-normal leading-4 text-eg-blue-black-25">
                 {match.reason}
               </p>
             </button>
