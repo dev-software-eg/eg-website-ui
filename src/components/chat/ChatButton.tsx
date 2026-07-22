@@ -69,7 +69,7 @@ export default function ChatButton() {
 
 
   return (
-    <div className="relative w-16 shrink-0">
+    <div className="relative w-16 h-full shrink-0">
       {/* Toggle button */}
       <button
         className={`eg-chat-btn${open ? " eg-chat-btn--open" : ""} absolute inset-0 bg-transparent border-none cursor-pointer flex items-center justify-center p-0 transition-colors`}

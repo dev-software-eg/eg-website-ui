@@ -20,7 +20,7 @@ npm install
 cp .env.example .env.local
 ```
 
-Fill in `.env.local`:
+Fill in `.env.local`: 
 
 | Var | Purpose |
 |---|---|
