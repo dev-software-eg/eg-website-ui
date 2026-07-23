@@ -3,20 +3,17 @@ export async function POST(request: Request) {
   // This server-side fetch to ai-search-api is a new outbound connection, so
   // ai-search-api would otherwise see this function's own IP instead of the
   // real visitor's — forward the visitor's IP explicitly.
+  // Vercel overwrites x-forwarded-for on the next hop with this function's
+  // own connecting IP, so a custom header name is needed to actually carry
+  // the real visitor's IP through to ai-search-api.
   const clientIp = request.headers.get('x-forwarded-for');
-  console.log('DEBUG headers', {
-    'x-forwarded-for': request.headers.get('x-forwarded-for'),
-    'x-real-ip': request.headers.get('x-real-ip'),
-    'x-vercel-forwarded-for': request.headers.get('x-vercel-forwarded-for'),
-    'x-vercel-ip': request.headers.get('x-vercel-ip'),
-  });
 
   try {
     const upstream = await fetch(`${process.env.AI_SEARCH_API_URL}/api/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...(clientIp && { 'x-forwarded-for': clientIp }),
+        ...(clientIp && { 'x-original-client-ip': clientIp }),
         ...(process.env.AI_SEARCH_API_BYPASS_SECRET && {
           'x-vercel-protection-bypass': process.env.AI_SEARCH_API_BYPASS_SECRET,
         }),
