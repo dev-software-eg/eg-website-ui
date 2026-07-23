@@ -4,6 +4,12 @@ export async function POST(request: Request) {
   // ai-search-api would otherwise see this function's own IP instead of the
   // real visitor's — forward the visitor's IP explicitly.
   const clientIp = request.headers.get('x-forwarded-for');
+  console.log('DEBUG headers', {
+    'x-forwarded-for': request.headers.get('x-forwarded-for'),
+    'x-real-ip': request.headers.get('x-real-ip'),
+    'x-vercel-forwarded-for': request.headers.get('x-vercel-forwarded-for'),
+    'x-vercel-ip': request.headers.get('x-vercel-ip'),
+  });
 
   try {
     const upstream = await fetch(`${process.env.AI_SEARCH_API_URL}/api/chat`, {
