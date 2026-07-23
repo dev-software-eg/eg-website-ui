@@ -16,6 +16,9 @@ export function useChat() {
   const [caseStudiesAfterIndex, setCaseStudiesAfterIndex] = useState<number | null>(null);
   const [caseStudies, setCaseStudies] = useState<SearchMatch[]>([]);
   const caseStudiesSetRef = useRef(false);
+  // Groups every turn of a conversation into one logged record server-side;
+  // regenerated on reset() so a new conversation doesn't overwrite the last one.
+  const conversationIdRef = useRef(crypto.randomUUID());
 
   const sendMessage = useCallback(
     async (content: string) => {
@@ -28,7 +31,7 @@ export function useChat() {
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: next }),
+          body: JSON.stringify({ messages: next, conversationId: conversationIdRef.current }),
         });
         const data = await res.json();
 
@@ -65,6 +68,7 @@ export function useChat() {
     setCaseStudiesAfterIndex(null);
     setCaseStudies([]);
     caseStudiesSetRef.current = false;
+    conversationIdRef.current = crypto.randomUUID();
   }, []);
 
   return { messages, isLoading, error, contactFormAfterIndex, needsSummary, caseStudiesAfterIndex, caseStudies, sendMessage, reset };
