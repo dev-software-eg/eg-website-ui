@@ -5,13 +5,13 @@ import FeaturedCaseStudyConnected from "@/components/layout/FeaturedCaseStudyCon
 export default function Home() {
   return (
     <div>
-      <Hero
+      {/* <Hero
         title="We use marketing"
         subtitle="to solve problems."
         body="At Estipona Group, we help businesses and organizations address challenges and meet goals. Buying, joining, understanding, watching, asking, celebrating, believing — if you want people to do something, we can help."
       />
       <FeaturedCaseStudyConnected />
-      <WhatWeDo />
+      <WhatWeDo /> */}
     </div>
   );
 }

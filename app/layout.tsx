@@ -30,7 +30,7 @@ export default function RootLayout({
       <body>
         <Navigation links={NAV_LINKS} />
         {children}
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );
