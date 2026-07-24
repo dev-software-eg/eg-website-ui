@@ -22,10 +22,13 @@ const ChatIcon = () => (
   </svg>
 );
 
+const IP_OPT_OUT_KEY = "eg-chat-ip-optout";
+
 export default function ChatButton() {
   const [open, setOpen] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [input, setInput] = useState("");
+  const [ipOptOut, setIpOptOut] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -43,6 +46,18 @@ export default function ChatButton() {
   const [selected, setSelected] = useState<SearchMatch | null>(null);
 
   useEffect(() => {
+    setIpOptOut(localStorage.getItem(IP_OPT_OUT_KEY) === "true");
+  }, []);
+
+  const toggleIpOptOut = () => {
+    setIpOptOut((prev) => {
+      const next = !prev;
+      localStorage.setItem(IP_OPT_OUT_KEY, String(next));
+      return next;
+    });
+  };
+
+  useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
 
@@ -55,7 +70,7 @@ export default function ChatButton() {
     const trimmed = input.trim();
     if (!trimmed || isLoading) return;
     setInput("");
-    sendMessage(trimmed);
+    sendMessage(trimmed, ipOptOut);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -114,6 +129,22 @@ export default function ChatButton() {
                 {fullscreen ? "⤡" : "⤢"}
               </button>
             </div>
+          </div>
+
+          {/* IP collection notice */}
+          <div className="px-5 py-2.5 border-b border-eg-blue-black-08 shrink-0 bg-eg-bg-gray">
+            <p className="m-0 mb-1.5 text-[11px] font-helvetica font-normal text-eg-blue-black-25 leading-4">
+              This chat collects your IP address. Opt out below to stop it from being stored.
+            </p>
+            <label className="flex items-center gap-1.5 text-[11px] font-helvetica font-medium text-eg-blue-black cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={ipOptOut}
+                onChange={toggleIpOptOut}
+                className="cursor-pointer"
+              />
+              Don&apos;t store my IP address
+            </label>
           </div>
 
           {/* Messages */}

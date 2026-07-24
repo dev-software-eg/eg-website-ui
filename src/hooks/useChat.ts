@@ -21,7 +21,7 @@ export function useChat() {
   const conversationIdRef = useRef(crypto.randomUUID());
 
   const sendMessage = useCallback(
-    async (content: string) => {
+    async (content: string, optOutIp: boolean = false) => {
       const next: ChatMessage[] = [...messages, { role: "user", content }];
       setMessages(next);
       setIsLoading(true);
@@ -31,7 +31,7 @@ export function useChat() {
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: next, conversationId: conversationIdRef.current }),
+          body: JSON.stringify({ messages: next, conversationId: conversationIdRef.current, optOutIp }),
         });
         const data = await res.json();
 
