@@ -12,10 +12,10 @@ interface NavigationProps {
 }
 
 const DEFAULT_LINKS: NavLink[] = [
-  { label: "Work", href: "/work" },
-  { label: "What We Do", href: "/what-we-do" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  // { label: "Work", href: "/work" },
+  // { label: "What We Do", href: "/what-we-do" },
+  // { label: "About", href: "/about" },
+  // { label: "Contact", href: "/contact" },
 ];
 
 const MenuIcon = ({ open }: { open: boolean }) => (
@@ -44,7 +44,7 @@ export default function Navigation({ links = DEFAULT_LINKS }: NavigationProps) {
 
       <div className="flex items-stretch">
         <div className="hidden lg:flex items-center gap-8">
-          {links.map(({ label, href }) => {
+          {/* {links.map(({ label, href }) => {
             const isActive = pathname === href;
             return (
               <Link
@@ -57,7 +57,7 @@ export default function Navigation({ links = DEFAULT_LINKS }: NavigationProps) {
                 {label}
               </Link>
             );
-          })}
+          })} */}
         </div>
 
         <button

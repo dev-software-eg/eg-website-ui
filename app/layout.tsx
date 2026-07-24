@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from "@/components/layout/Navigation";
-import Footer from "@/components/layout/Footer";
+// import Footer from "@/components/layout/Footer";
 import { type NavLink } from "@/api/models";
 
 const NAV_LINKS: NavLink[] = [
@@ -30,7 +30,7 @@ export default function RootLayout({
       <body>
         <Navigation links={NAV_LINKS} />
         {children}
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );
