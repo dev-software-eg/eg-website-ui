@@ -2,6 +2,7 @@ import Hero from "@/components/layout/Hero";
 import WhatWeDo from "@/components/layout/WhatWeDo";
 import FeaturedCaseStudyConnected from "@/components/layout/FeaturedCaseStudyConnected";
 import WhoWeAre from "@/components/layout/WhoWeAre";
+import SecretSauce from "@/components/layout/SecretSauce";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <FeaturedCaseStudyConnected />
       <WhatWeDo />
       <WhoWeAre />
+      <SecretSauce />
     </div>
   );
 }
