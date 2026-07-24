@@ -9,6 +9,8 @@ interface ScrollRevealProps {
   delay?: number;
   direction?: Direction;
   duration?: number;
+  className?: string;
+  rootMargin?: string;
 }
 
 const OFFSET: Record<Direction, { x: number; y: number }> = {
@@ -19,7 +21,7 @@ const OFFSET: Record<Direction, { x: number; y: number }> = {
   none:  { x: 0,   y: 0 },
 };
 
-export function ScrollReveal({ children, delay = 0, direction = 'up', duration = 0.6 }: ScrollRevealProps) {
+export function ScrollReveal({ children, delay = 0, direction = 'up', duration = 0.6, className, rootMargin = '0px' }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -29,7 +31,7 @@ export function ScrollReveal({ children, delay = 0, direction = 'up', duration =
 
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -40,6 +42,7 @@ export function ScrollReveal({ children, delay = 0, direction = 'up', duration =
   return (
     <div
       ref={ref}
+      className={className}
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? 'translate(0, 0)' : `translate(${x}px, ${y}px)`,

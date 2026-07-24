@@ -1,5 +1,10 @@
 import arrowUpRight from "@/assets/icons/arrow-up-right.svg";
+import { ScrollReveal } from "@/components/ui/ScrollMotion";
+import { TiltCard } from "@/components/ui/TiltCard";
 const arrowUpRightSrc = arrowUpRight.src;
+
+const GRID_COLS = 3;
+const ROW_DELAY = 0.15;
 
 interface SecretSauceItem {
   heading: string;
@@ -60,35 +65,40 @@ export default function SecretSauce({
         </h2>
 
         <div className="mt-10 lg:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {items.map((item) => (
-            <div
-              key={item.heading}
-              className="bg-eg-bg-gray rounded-[13px] p-6 lg:p-8 flex flex-col gap-3"
-            >
-              <p className="m-0 text-eg-blue-black-95 text-lg lg:text-xl font-helvetica font-normal leading-6.5">
-                {item.heading}
-              </p>
-              <p className="m-0 text-eg-blue-black-55 text-sm font-helvetica font-normal leading-5.5 tracking-[0.14px]">
-                {item.body}
-              </p>
-            </div>
+          {items.map((item, i) => (
+            <ScrollReveal key={item.heading} delay={Math.floor(i / GRID_COLS) * ROW_DELAY} className="h-full" rootMargin="0px 0px -15% 0px">
+              <TiltCard className="h-full">
+                <div className="h-full bg-eg-bg-gray rounded-[13px] p-6 lg:p-8 flex flex-col gap-3">
+                  <p className="m-0 text-eg-blue-black-95 text-lg lg:text-xl font-helvetica font-normal leading-6.5">
+                    {item.heading}
+                  </p>
+                  <p className="m-0 text-eg-blue-black-55 text-sm font-helvetica font-normal leading-5.5 tracking-[0.14px]">
+                    {item.body}
+                  </p>
+                </div>
+              </TiltCard>
+            </ScrollReveal>
           ))}
 
-          <a
-            href={ctaHref}
-            className="bg-eg-red rounded-[13px] p-6 lg:p-8 flex flex-col justify-between gap-8 min-h-40 no-underline transition-colors hover:bg-eg-red-dark"
-          >
-            <span className="text-eg-white text-lg lg:text-xl font-helvetica font-normal leading-6.5">
-              {ctaLabel}
-            </span>
-            <span className="self-end text-eg-white text-xl font-dm-sans font-bold">
-              <img
-                src={arrowUpRightSrc}
-                alt="Arrow up right"
-                className="h-8 w-8"
-              />
-            </span>
-          </a>
+          <ScrollReveal delay={Math.floor(items.length / GRID_COLS) * ROW_DELAY} className="h-full" rootMargin="0px 0px -15% 0px">
+            <TiltCard className="h-full">
+              <a
+                href={ctaHref}
+                className="h-full bg-eg-red rounded-[13px] p-6 lg:p-8 flex flex-col justify-between gap-8 min-h-40 no-underline transition-colors hover:bg-eg-red-dark"
+              >
+                <span className="text-eg-white text-lg lg:text-xl font-helvetica font-normal leading-6.5">
+                  {ctaLabel}
+                </span>
+                <span className="self-end text-eg-white text-xl font-dm-sans font-bold">
+                  <img
+                    src={arrowUpRightSrc}
+                    alt="Arrow up right"
+                    className="h-8 w-8"
+                  />
+                </span>
+              </a>
+            </TiltCard>
+          </ScrollReveal>
         </div>
       </div>
     </section>
