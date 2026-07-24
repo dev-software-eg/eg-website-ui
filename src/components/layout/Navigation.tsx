@@ -44,7 +44,7 @@ export default function Navigation({ links = DEFAULT_LINKS }: NavigationProps) {
 
       <div className="flex items-stretch">
         <div className="hidden lg:flex items-center gap-8">
-          {/* {links.map(({ label, href }) => {
+          {links.map(({ label, href }) => {
             const isActive = pathname === href;
             return (
               <Link
@@ -57,7 +57,7 @@ export default function Navigation({ links = DEFAULT_LINKS }: NavigationProps) {
                 {label}
               </Link>
             );
-          })} */}
+          })}
         </div>
 
         <button
