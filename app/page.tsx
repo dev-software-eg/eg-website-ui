@@ -3,6 +3,7 @@ import WhatWeDo from "@/components/layout/WhatWeDo";
 import FeaturedCaseStudyConnected from "@/components/layout/FeaturedCaseStudyConnected";
 import WhoWeAre from "@/components/layout/WhoWeAre";
 import SecretSauce from "@/components/layout/SecretSauce";
+import LogoSoup from "@/components/layout/LogoSoup";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <WhatWeDo />
       <WhoWeAre />
       <SecretSauce />
+      <LogoSoup />
     </div>
   );
 }
