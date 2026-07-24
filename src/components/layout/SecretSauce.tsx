@@ -1,3 +1,6 @@
+import arrowUpRight from "@/assets/icons/arrow-up-right.svg";
+const arrowUpRightSrc = arrowUpRight.src;
+
 interface SecretSauceItem {
   heading: string;
   body: string;
@@ -79,7 +82,11 @@ export default function SecretSauce({
               {ctaLabel}
             </span>
             <span className="self-end text-eg-white text-xl font-dm-sans font-bold">
-              ↗
+              <img
+                src={arrowUpRightSrc}
+                alt="Arrow up right"
+                className="h-8 w-8"
+              />
             </span>
           </a>
         </div>

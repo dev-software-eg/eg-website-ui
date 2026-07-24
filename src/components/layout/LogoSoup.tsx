@@ -1,4 +1,4 @@
-import logoDetr from "../../assets/media/logo/logo-detr.svg";
+import logoDetr from "../../assets/logos/logo-detr.svg";
 
 const logoSrc = logoDetr.src;
 
